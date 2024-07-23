@@ -12,6 +12,7 @@ public class DataContext : DbContext
     public DbSet<Enterprise> Enterprises { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Brand> Brands { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
 
