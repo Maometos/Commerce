@@ -6,5 +6,6 @@ public class Discount
     public int ItemId { get; set; }
     public int MinQuantity { get; set; }
     public double Rate { get; set; }
+
     public List<Item> Items { get; } = [];
 }
