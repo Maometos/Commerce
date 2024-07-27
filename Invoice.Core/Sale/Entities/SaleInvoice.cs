@@ -13,4 +13,5 @@ public class SaleInvoice : Transaction
 
     public Customer Customer { get; set; } = null!;
     public List<SaleInvoiceLine> Lines { get; } = [];
+    public List<SaleInvoiceTax> Taxes { get; } = [];
 }
