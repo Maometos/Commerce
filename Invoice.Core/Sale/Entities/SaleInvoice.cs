@@ -12,4 +12,5 @@ public class SaleInvoice : Transaction
     public InvoiceStatus Status { get; set; }
 
     public Customer Customer { get; set; } = null!;
+    public List<SaleInvoiceLine> Lines { get; } = [];
 }
