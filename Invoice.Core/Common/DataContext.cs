@@ -24,6 +24,7 @@ public class DataContext : DbContext
     public DbSet<Vendor> Vendors { get; set; }
     public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
     public DbSet<PurchaseInvoiceLine> PurchaseInvoiceLines { get; set; }
+    public DbSet<PurchaseInvoiceTax> PurchaseInvoiceTaxes { get; set; }
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
