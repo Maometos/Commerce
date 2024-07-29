@@ -12,4 +12,5 @@ public class PurchaseInvoice : Transaction
     public InvoiceStatus Status { get; set; }
 
     public Vendor Vendor { get; set; } = null!;
+    public List<PurchaseInvoiceLine> Lines { get; } = [];
 }
