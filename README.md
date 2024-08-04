@@ -1,2 +1,2 @@
-# Invoice
-Invoice Management &amp; Accounting Library
+# Commerce
+Commerce Management Library
