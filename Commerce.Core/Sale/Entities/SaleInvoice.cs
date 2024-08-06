@@ -9,4 +9,5 @@ public class SaleInvoice : Invoice
     public Customer Customer { get; set; } = null!;
     public List<SaleInvoiceLine> Lines { get; } = [];
     public List<SaleInvoiceTax> Taxes { get; } = [];
+    public List<SalePayment> Payments { get; } = [];
 }

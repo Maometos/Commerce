@@ -21,6 +21,7 @@ public class DataContext : DbContext
     public DbSet<SaleInvoice> SaleInvoices { get; set; }
     public DbSet<SaleInvoiceLine> SaleInvoiceLines { get; set; }
     public DbSet<SaleInvoiceTax> SaleInvoiceTaxes { get; set; }
+    public DbSet<SalePayment> SalePayments { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
     public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
     public DbSet<PurchaseInvoiceLine> PurchaseInvoiceLines { get; set; }
