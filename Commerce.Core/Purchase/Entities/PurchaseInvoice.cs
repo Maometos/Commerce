@@ -9,4 +9,5 @@ public class PurchaseInvoice : Invoice
     public Vendor Vendor { get; set; } = null!;
     public List<PurchaseInvoiceLine> Lines { get; } = [];
     public List<PurchaseInvoiceTax> Taxes { get; } = [];
+    public List<PurchasePayment> Payments { get; } = [];
 }
