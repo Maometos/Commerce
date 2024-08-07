@@ -1,6 +1,6 @@
 ﻿namespace Commerce.Core.Common.Values;
 
-public enum InvoiceStatus
+public enum StatementStatus
 {
     Draft,
     Cancelled,
