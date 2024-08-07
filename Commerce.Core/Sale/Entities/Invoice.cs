@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Sale.Entities;
 
-public class SaleInvoice : Statement
+public class Invoice : Statement
 {
     public int CustomerId { get; set; }
 

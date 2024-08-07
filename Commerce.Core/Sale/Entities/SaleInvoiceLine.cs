@@ -4,7 +4,7 @@ namespace Commerce.Core.Sale.Entities;
 
 public class SaleInvoiceLine : TransactionLine
 {
-    public int SaleInvoiceId { get; set; }
+    public int InvoiceId { get; set; }
 
-    public SaleInvoice SaleInvoice { get; set; } = null!;
+    public Invoice Invoice { get; set; } = null!;
 }
