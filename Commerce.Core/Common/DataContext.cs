@@ -23,7 +23,7 @@ public class DataContext : DbContext
     public DbSet<SaleInvoiceTax> SaleInvoiceTaxes { get; set; }
     public DbSet<SalePayment> SalePayments { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
-    public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
+    public DbSet<Bill> Bills { get; set; }
     public DbSet<PurchaseInvoiceLine> PurchaseInvoiceLines { get; set; }
     public DbSet<PurchaseInvoiceTax> PurchaseInvoiceTaxes { get; set; }
     public DbSet<PurchasePayment> PurchasePayments { get; set; }

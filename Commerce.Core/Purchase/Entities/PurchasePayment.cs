@@ -4,7 +4,7 @@ namespace Commerce.Core.Purchase.Entities;
 
 public class PurchasePayment : Payment
 {
-    public int PurchaseInvoiceId { get; set; }
+    public int BillId { get; set; }
 
-    public PurchaseInvoice PurchaseInvoice { get; set; } = null!;
+    public Bill Bill { get; set; } = null!;
 }
