@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class PurchaseInvoice : Invoice
+public class PurchaseInvoice : Statement
 {
     public int VendorId { get; set; }
 

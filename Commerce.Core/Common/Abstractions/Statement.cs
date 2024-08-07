@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Invoice : Transaction
+public abstract class Statement : Transaction
 {
     public DateTime DueDate { get; set; }
     public decimal SubTotal { get; set; }
