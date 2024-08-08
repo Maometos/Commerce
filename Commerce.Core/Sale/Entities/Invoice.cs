@@ -8,6 +8,6 @@ public class Invoice : Statement
 
     public Customer Customer { get; set; } = null!;
     public List<InvoiceLine> Lines { get; } = [];
-    public List<SaleInvoiceTax> Taxes { get; } = [];
+    public List<InvoiceTax> Taxes { get; } = [];
     public List<SalePayment> Payments { get; } = [];
 }
