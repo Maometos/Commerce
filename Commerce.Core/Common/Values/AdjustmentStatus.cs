@@ -1,6 +1,6 @@
 ﻿namespace Commerce.Core.Common.Values;
 
-public enum CreditStatus
+public enum AdjustmentStatus
 {
     Draft,
     Declined,
