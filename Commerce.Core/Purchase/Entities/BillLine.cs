@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class PurchaseInvoiceLine : TransactionLine
+public class BillLine : TransactionLine
 {
     public int BillId { get; set; }
 

@@ -7,7 +7,7 @@ public class Bill : Statement
     public int VendorId { get; set; }
 
     public Vendor Vendor { get; set; } = null!;
-    public List<PurchaseInvoiceLine> Lines { get; } = [];
+    public List<BillLine> Lines { get; } = [];
     public List<PurchaseInvoiceTax> Taxes { get; } = [];
     public List<PurchasePayment> Payments { get; } = [];
 }
