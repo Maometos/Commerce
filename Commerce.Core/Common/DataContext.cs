@@ -28,6 +28,7 @@ public class DataContext : DbContext
     public DbSet<BillLine> BillLines { get; set; }
     public DbSet<BillTax> BillTaxes { get; set; }
     public DbSet<PurchasePayment> PurchasePayments { get; set; }
+    public DbSet<DebitNote> DebitNotes { get; set; }
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
