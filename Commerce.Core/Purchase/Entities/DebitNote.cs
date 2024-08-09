@@ -7,4 +7,5 @@ public class DebitNote : Adjustment
     public int VendorId { get; set; }
 
     public Vendor Vendor { get; set; } = null!;
+    public List<DebitLine> Lines { get; } = [];
 }
