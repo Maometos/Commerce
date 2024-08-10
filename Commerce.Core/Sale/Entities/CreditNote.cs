@@ -9,4 +9,5 @@ public class CreditNote : Adjustment
     public Customer Customer { get; set; } = null!;
     public List<CreditLine> Lines { get; } = [];
     public List<CreditTax> Taxes { get; } = [];
+    public List<SaleRefund> Refunds { get; } = [];
 }
