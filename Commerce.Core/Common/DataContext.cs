@@ -34,6 +34,7 @@ public class DataContext : DbContext
     public DbSet<DebitNote> DebitNotes { get; set; }
     public DbSet<DebitLine> DebitLines { get; set; }
     public DbSet<DebitTax> DebitTaxes { get; set; }
+    public DbSet<PurchaseRefund> PurchaseRefunds { get; set; }
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
