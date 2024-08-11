@@ -1,4 +1,6 @@
-﻿namespace Commerce.Core.Inventory.Entities;
+﻿using Commerce.Core.Inventory.Entities;
+
+namespace Commerce.Core.Common.Entities;
 
 public class Discount
 {
