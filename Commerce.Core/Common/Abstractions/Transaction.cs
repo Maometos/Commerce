@@ -1,4 +1,4 @@
-﻿using Commerce.Core.Organization.Entities;
+﻿using Commerce.Core.Common.Entities;
 
 namespace Commerce.Core.Common.Abstractions;
 

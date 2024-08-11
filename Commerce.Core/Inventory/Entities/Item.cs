@@ -1,4 +1,4 @@
-﻿using Commerce.Core.Organization.Entities;
+﻿using Commerce.Core.Common.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Commerce.Core.Inventory.Entities;

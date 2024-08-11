@@ -1,4 +1,4 @@
-﻿namespace Commerce.Core.Organization.Entities;
+﻿namespace Commerce.Core.Common.Entities;
 
 public class TaxRate
 {

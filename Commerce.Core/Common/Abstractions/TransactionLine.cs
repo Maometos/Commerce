@@ -1,5 +1,5 @@
-﻿using Commerce.Core.Inventory.Entities;
-using Commerce.Core.Organization.Entities;
+﻿using Commerce.Core.Common.Entities;
+using Commerce.Core.Inventory.Entities;
 
 namespace Commerce.Core.Common.Abstractions;
 
