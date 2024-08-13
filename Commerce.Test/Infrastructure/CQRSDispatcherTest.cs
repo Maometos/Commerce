@@ -19,16 +19,16 @@ public class CQRSDispatcherTest
     public async void TestDispatchingFindQuery()
     {
         var query = new EntityQuery() { Id = 1, Action = QueryAction.Find };
-        var list = (List<Entity>?)await dispatcher.DispatchAsync(query);
-        Assert.NotEmpty(list!);
-        Assert.Equal(1, list!.First().Id);
+        var entity = await dispatcher.DispatchAsync(query) as Entity;
+        Assert.NotNull(entity);
+        Assert.Equal(1, entity.Id);
     }
 
     [Fact]
     public async void TestDispatchingListQuery()
     {
         var query = new EntityQuery() { Action = QueryAction.List };
-        var list = (List<Entity>?)await dispatcher.DispatchAsync(query);
+        var list = await dispatcher.DispatchAsync(query) as List<Entity>;
         Assert.NotEmpty(list!);
         Assert.Equal(2, list!.Count);
     }
@@ -37,8 +37,13 @@ public class CQRSDispatcherTest
     public async void TestDispatchingFailedQuery()
     {
         var query = new EntityQuery();
-        var list = (List<Entity>?)await dispatcher.DispatchAsync(query);
-        Assert.Empty(list!);
+        var result = await dispatcher.DispatchAsync(query);
+        Assert.Null(result);
+
+        query.Id = 0;
+        query.Action = QueryAction.Find;
+        result = await dispatcher.DispatchAsync(query) as Entity;
+        Assert.Null(result);
     }
 
     [Fact]
