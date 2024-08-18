@@ -30,7 +30,7 @@ public class BrandQueryHandler : QueryHandler<BrandQuery, Brand>
         var brands = context.Brands.AsQueryable();
         if (!string.IsNullOrEmpty(query.Name))
         {
-            brands = context.Brands.Where(user => user.Name.ToLower().Contains(query.Name.ToLower()));
+            brands = brands.Where(user => user.Name.ToLower().Contains(query.Name.ToLower()));
         }
 
         if (!string.IsNullOrEmpty(query.Sort))

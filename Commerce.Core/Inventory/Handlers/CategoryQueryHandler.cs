@@ -30,7 +30,7 @@ public class CategoryQueryHandler : QueryHandler<CategoryQuery, Category>
         var categories = context.Categories.AsQueryable();
         if (!string.IsNullOrEmpty(query.Name))
         {
-            categories = context.Categories.Where(user => user.Name.ToLower().Contains(query.Name.ToLower()));
+            categories = categories.Where(user => user.Name.ToLower().Contains(query.Name.ToLower()));
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
