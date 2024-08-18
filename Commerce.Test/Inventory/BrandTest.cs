@@ -38,7 +38,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestCreatingBrand()
+    public async void TestCreating()
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Create;
@@ -49,7 +49,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestUpdatingBrand()
+    public async void TestUpdating()
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Update;
@@ -61,7 +61,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestDeletingBrand()
+    public async void TestDeleting()
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Delete;
@@ -72,7 +72,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestFindingBrandById()
+    public async void TestFinding()
     {
         var query = new BrandQuery();
         query.Action = QueryAction.Find;
@@ -84,7 +84,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestFilteringBrandByName()
+    public async void TestFiltering()
     {
         var query = new BrandQuery();
         query.Action = QueryAction.List;
@@ -96,7 +96,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestSortingBrandsByName()
+    public async void TestSorting()
     {
         var query = new BrandQuery();
         query.Action = QueryAction.List;
@@ -117,7 +117,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestSortingBrandsByNameInReversOrder()
+    public async void TestReverseSorting()
     {
         var query = new BrandQuery();
         query.Action = QueryAction.List;
@@ -139,7 +139,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestPaginatingBrands()
+    public async void TestPaginating()
     {
         var query = new BrandQuery();
         query.Action = QueryAction.List;

@@ -120,7 +120,7 @@ public class ItemTest
     }
 
     [Fact]
-    public async void TestSortingInReversOrder()
+    public async void TestReverseSorting()
     {
         var query = new ItemQuery();
         query.Action = QueryAction.List;

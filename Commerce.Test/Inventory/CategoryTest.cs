@@ -28,15 +28,17 @@ public class CategoryTest
         var category1 = new Category() { Id = 1, Name = "Shoes" };
         var category2 = new Category() { Id = 2, Name = "Clothing" };
         var category3 = new Category() { Id = 3, Name = "Underwear" };
+        var category4 = new Category() { Id = 4, Name = "Swimwear" };
 
         context.Categories.Add(category1);
         context.Categories.Add(category2);
         context.Categories.Add(category3);
+        context.Categories.Add(category4);
         context.SaveChanges();
     }
 
     [Fact]
-    public async void TestCreatingCategory()
+    public async void TestCreating()
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Create;
@@ -47,7 +49,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestUpdatingCategory()
+    public async void TestUpdating()
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Update;
@@ -59,7 +61,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestDeletingCategory()
+    public async void TestDeleting()
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Delete;
@@ -70,7 +72,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestFindingCategoryById()
+    public async void TestFinding()
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.Find;
@@ -82,7 +84,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestFilteringCategoryByName()
+    public async void TestFiltering()
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.List;
@@ -94,7 +96,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestSortingCategoriesByName()
+    public async void TestSorting()
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.List;
@@ -106,14 +108,16 @@ public class CategoryTest
         var category1 = list[0];
         var category2 = list[1];
         var category3 = list[2];
+        var category4 = list[3];
 
         Assert.Equal("Clothing", category1.Name);
         Assert.Equal("Shoes", category2.Name);
-        Assert.Equal("Underwear", category3.Name);
+        Assert.Equal("Swimwear", category3.Name);
+        Assert.Equal("Underwear", category4.Name);
     }
 
     [Fact]
-    public async void TestSortingCategoriesByNameInReversOrder()
+    public async void TestReverseSorting()
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.List;
@@ -126,14 +130,16 @@ public class CategoryTest
         var category1 = list[0];
         var category2 = list[1];
         var category3 = list[2];
+        var category4 = list[3];
 
         Assert.Equal("Underwear", category1.Name);
-        Assert.Equal("Shoes", category2.Name);
-        Assert.Equal("Clothing", category3.Name);
+        Assert.Equal("Swimwear", category2.Name);
+        Assert.Equal("Shoes", category3.Name);
+        Assert.Equal("Clothing", category4.Name);
     }
 
     [Fact]
-    public async void TestPaginatingCategories()
+    public async void TestPaginating()
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.List;
@@ -143,7 +149,9 @@ public class CategoryTest
         var list = await dispatcher.DispatchAsync(query) as List<Category>;
         Assert.NotNull(list);
 
-        var category = list[0];
-        Assert.Equal("Underwear", category.Name);
+        var category1 = list[0];
+        var category2 = list[1];
+        Assert.Equal("Underwear", category1.Name);
+        Assert.Equal("Swimwear", category2.Name);
     }
 }
