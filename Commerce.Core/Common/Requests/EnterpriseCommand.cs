@@ -1,9 +1,11 @@
-﻿namespace Commerce.Core.Common.Abstractions;
+﻿using Commerce.Infrastructure.CQRS;
 
-public abstract class Profile
+namespace Commerce.Core.Common.Requests;
+
+public class EnterpriseCommand : Command
 {
     public int Id { get; set; }
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string? Address { get; set; }
