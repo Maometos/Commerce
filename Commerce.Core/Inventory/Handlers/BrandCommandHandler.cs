@@ -31,7 +31,7 @@ public class BrandCommandHandler : CommandHandler<BrandCommand>
             return 0;
         }
 
-        brand.Name = command.Name!;
+        brand.Name = command.Name ?? brand.Name;
 
         context.Brands.Update(brand);
         return await context.SaveChangesAsync(token);

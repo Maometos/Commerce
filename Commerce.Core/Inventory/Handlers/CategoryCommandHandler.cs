@@ -32,8 +32,8 @@ public class CategoryCommandHandler : CommandHandler<CategoryCommand>
             return 0;
         }
 
-        category.Name = command.Name!;
-        category.Description = command.Description;
+        category.Name = command.Name ?? category.Name;
+        category.Description = command.Description ?? category.Description;
 
         context.Categories.Update(category);
         return await context.SaveChangesAsync(token);
