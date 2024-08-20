@@ -2,6 +2,7 @@
 using Commerce.Core.Purchase.Entities;
 using Commerce.Core.Purchase.Handlers;
 using Commerce.Core.Purchase.Requests;
+using Commerce.Core.Sale.Requests;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +24,17 @@ public class VendorTest
         dispatcher = new EventDispatcher();
         dispatcher.AddService(context);
         dispatcher.AddHandler<VendorCommandHandler>();
+        dispatcher.AddHandler<VendorQueryHandler>();
 
-        var customer1 = new Vendor() { Id = 1, Name = "John Doe", Email = "john.doe@email.com" };
-        var customer2 = new Vendor() { Id = 2, Name = "Jane Doe", Email = "Jane.doe@email.com" };
-        var customer3 = new Vendor() { Id = 3, Name = "John Smith", Email = "Jane.Smith@email.com" };
-        var customer4 = new Vendor() { Id = 4, Name = "Jane Smith", Email = "Jane.Smith@email.com" };
+        var vendor1 = new Vendor() { Id = 1, Name = "John Doe", Email = "john.doe@email.com", Country = "Canada" };
+        var vendor2 = new Vendor() { Id = 2, Name = "Jane Doe", Email = "Jane.doe@email.com", Country = "Canada" };
+        var vendor3 = new Vendor() { Id = 3, Name = "John Smith", Email = "Jane.Smith@email.com", Country = "USA" };
+        var vendor4 = new Vendor() { Id = 4, Name = "Jane Smith", Email = "Jane.Smith@email.com", Country = "USA" };
 
-        context.Vendors.Add(customer1);
-        context.Vendors.Add(customer2);
-        context.Vendors.Add(customer3);
-        context.Vendors.Add(customer4);
+        context.Vendors.Add(vendor1);
+        context.Vendors.Add(vendor2);
+        context.Vendors.Add(vendor3);
+        context.Vendors.Add(vendor4);
         context.SaveChanges();
     }
 
@@ -59,8 +61,8 @@ public class VendorTest
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
 
-        var customer = await context.Vendors.FindAsync(4);
-        Assert.Equal("Fake street", customer!.Address);
+        var vendor = await context.Vendors.FindAsync(4);
+        Assert.Equal("Fake street", vendor!.Address);
     }
 
     [Fact]
@@ -72,5 +74,89 @@ public class VendorTest
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
+    }
+
+    [Fact]
+    public async void TestFinding()
+    {
+        var query = new VendorQuery();
+        query.Action = QueryAction.Find;
+        query.Id = 1;
+
+        var vendor = await dispatcher.DispatchAsync(query) as Vendor;
+        Assert.NotNull(vendor);
+        Assert.Equal("John Doe", vendor.Name);
+    }
+
+    [Fact]
+    public async void TestFiltering()
+    {
+        var query = new VendorQuery();
+        query.Action = QueryAction.List;
+        query.Country = "Canada";
+
+        var list = await dispatcher.DispatchAsync(query) as List<Vendor>;
+        Assert.NotNull(list);
+        Assert.Equal(2, list.Count);
+    }
+
+    [Fact]
+    public async void TestSorting()
+    {
+        var query = new VendorQuery();
+        query.Action = QueryAction.List;
+        query.Sort = "Name";
+
+        var list = await dispatcher.DispatchAsync(query) as List<Vendor>;
+        Assert.NotNull(list);
+
+        var vendor1 = list[0];
+        var vendor2 = list[1];
+        var vendor3 = list[2];
+        var vendor4 = list[3];
+
+        Assert.Equal("Jane Doe", vendor1.Name);
+        Assert.Equal("Jane Smith", vendor2.Name);
+        Assert.Equal("John Doe", vendor3.Name);
+        Assert.Equal("John Smith", vendor4.Name);
+    }
+
+    [Fact]
+    public async void TestReverseSorting()
+    {
+        var query = new VendorQuery();
+        query.Action = QueryAction.List;
+        query.Sort = "Name";
+        query.Reverse = true;
+
+        var list = await dispatcher.DispatchAsync(query) as List<Vendor>;
+        Assert.NotNull(list);
+
+        var vendor1 = list[0];
+        var vendor2 = list[1];
+        var vendor3 = list[2];
+        var vendor4 = list[3];
+
+        Assert.Equal("John Smith", vendor1.Name);
+        Assert.Equal("John Doe", vendor2.Name);
+        Assert.Equal("Jane Smith", vendor3.Name);
+        Assert.Equal("Jane Doe", vendor4.Name);
+    }
+
+    [Fact]
+    public async void TestPaginating()
+    {
+        var query = new VendorQuery();
+        query.Action = QueryAction.List;
+        query.Page = 2;
+        query.Limit = 2;
+
+        var list = await dispatcher.DispatchAsync(query) as List<Vendor>;
+        Assert.NotNull(list);
+
+        var vendor1 = list[0];
+        var vendor2 = list[1];
+        Assert.Equal("John Smith", vendor1.Name);
+        Assert.Equal("Jane Smith", vendor2.Name);
     }
 }
