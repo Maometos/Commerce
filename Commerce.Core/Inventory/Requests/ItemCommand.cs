@@ -4,5 +4,4 @@ namespace Commerce.Core.Identity.Requests;
 
 public class ItemCommand : Command
 {
-    public object? Argument { get; set; }
 }
