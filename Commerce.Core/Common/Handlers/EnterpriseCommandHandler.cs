@@ -1,6 +1,7 @@
 ﻿using Commerce.Core.Common.Entities;
 using Commerce.Core.Common.Requests;
 using Commerce.Infrastructure.CQRS;
+using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Common.Handlers;
 
@@ -15,50 +16,45 @@ public class EnterpriseCommandHandler : CommandHandler<EnterpriseCommand>
 
     protected override async Task<int> CreateAsync(EnterpriseCommand command, CancellationToken token)
     {
-        var item = new Enterprise();
-        item.Name = command.Name!;
-        item.Email = command.Email!;
-        item.Phone = command.Phone!;
-        item.Address = command.Address!;
-        item.Locality = command.Locality!;
-        item.Territory = command.Territory!;
-        item.Postcode = command.Postcode!;
-        item.Country = command.Country!;
+        var enterprise = command.Argument as Enterprise;
+        if (enterprise == null)
+        {
+            return 0;
+        }
 
-        context.Enterprises.Add(item);
+        context.Enterprises.Add(enterprise);
         return await context.SaveChangesAsync();
     }
 
     protected override async Task<int> UpdateAsync(EnterpriseCommand command, CancellationToken token)
     {
-        var item = await context.Enterprises.FindAsync(command.Id, token);
-        if (item == null)
+        var enterprise = command.Argument as Enterprise;
+        if (enterprise == null)
         {
             return 0;
         }
 
-        item.Name = command.Name ?? item.Name;
-        item.Email = command.Email ?? item.Email;
-        item.Phone = command.Phone ?? item.Phone;
-        item.Address = command.Address ?? item.Address;
-        item.Locality = command.Locality ?? item.Locality;
-        item.Territory = command.Territory ?? item.Territory;
-        item.Postcode = command.Postcode ?? item.Postcode;
-        item.Country = command.Country ?? item.Country;
+        var entity = await context.Enterprises.FindAsync(enterprise.Id, token);
+        if (entity == null)
+        {
+            return 0;
+        }
 
-        context.Enterprises.Update(item);
+        context.Entry(entity).State = EntityState.Detached;
+
+        context.Enterprises.Update(enterprise);
         return await context.SaveChangesAsync(token);
     }
 
     protected override async Task<int> DeleteAsync(EnterpriseCommand command, CancellationToken token)
     {
-        var item = await context.Enterprises.FindAsync(command.Id, token);
-        if (item == null)
+        var enterprise = await context.Enterprises.FindAsync(command.Argument, token);
+        if (enterprise == null)
         {
             return 0;
         }
 
-        context.Enterprises.Remove(item);
+        context.Enterprises.Remove(enterprise);
         return await context.SaveChangesAsync(token);
     }
 }

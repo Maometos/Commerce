@@ -2,6 +2,7 @@
 using Commerce.Core.Identity.Requests;
 using Commerce.Core.Inventory.Entities;
 using Commerce.Infrastructure.CQRS;
+using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Identity.Handlers;
 
@@ -16,8 +17,11 @@ public class BrandCommandHandler : CommandHandler<BrandCommand>
 
     protected override async Task<int> CreateAsync(BrandCommand command, CancellationToken token)
     {
-        var brand = new Brand();
-        brand.Name = command.Name!;
+        var brand = command.Argument as Brand;
+        if (brand == null)
+        {
+            return 0;
+        }
 
         context.Brands.Add(brand);
         return await context.SaveChangesAsync();
@@ -25,13 +29,19 @@ public class BrandCommandHandler : CommandHandler<BrandCommand>
 
     protected override async Task<int> UpdateAsync(BrandCommand command, CancellationToken token)
     {
-        var brand = await context.Brands.FindAsync(command.Id, token);
+        var brand = command.Argument as Brand;
         if (brand == null)
         {
             return 0;
         }
 
-        brand.Name = command.Name ?? brand.Name;
+        var entity = await context.Brands.FindAsync(brand.Id, token);
+        if (entity == null)
+        {
+            return 0;
+        }
+
+        context.Entry(entity).State = EntityState.Detached;
 
         context.Brands.Update(brand);
         return await context.SaveChangesAsync(token);
@@ -39,7 +49,7 @@ public class BrandCommandHandler : CommandHandler<BrandCommand>
 
     protected override async Task<int> DeleteAsync(BrandCommand command, CancellationToken token)
     {
-        var brand = await context.Brands.FindAsync(command.Id, token);
+        var brand = await context.Brands.FindAsync(command.Argument, token);
         if (brand == null)
         {
             return 0;

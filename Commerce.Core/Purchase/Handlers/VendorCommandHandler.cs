@@ -2,6 +2,7 @@
 using Commerce.Core.Purchase.Entities;
 using Commerce.Core.Purchase.Requests;
 using Commerce.Infrastructure.CQRS;
+using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Purchase.Handlers;
 
@@ -16,50 +17,45 @@ public class VendorCommandHandler : CommandHandler<VendorCommand>
 
     protected override async Task<int> CreateAsync(VendorCommand command, CancellationToken token)
     {
-        var item = new Vendor();
-        item.Name = command.Name!;
-        item.Email = command.Email!;
-        item.Phone = command.Phone!;
-        item.Address = command.Address!;
-        item.Locality = command.Locality!;
-        item.Territory = command.Territory!;
-        item.Postcode = command.Postcode!;
-        item.Country = command.Country!;
+        var vendor = command.Argument as Vendor;
+        if (vendor == null)
+        {
+            return 0;
+        }
 
-        context.Vendors.Add(item);
+        context.Vendors.Add(vendor);
         return await context.SaveChangesAsync();
     }
 
     protected override async Task<int> UpdateAsync(VendorCommand command, CancellationToken token)
     {
-        var item = await context.Vendors.FindAsync(command.Id, token);
-        if (item == null)
+        var vendor = command.Argument as Vendor;
+        if (vendor == null)
         {
             return 0;
         }
 
-        item.Name = command.Name ?? item.Name;
-        item.Email = command.Email ?? item.Email;
-        item.Phone = command.Phone ?? item.Phone;
-        item.Address = command.Address ?? item.Address;
-        item.Locality = command.Locality ?? item.Locality;
-        item.Territory = command.Territory ?? item.Territory;
-        item.Postcode = command.Postcode ?? item.Postcode;
-        item.Country = command.Country ?? item.Country;
+        var entity = await context.Vendors.FindAsync(vendor.Id, token);
+        if (entity == null)
+        {
+            return 0;
+        }
 
-        context.Vendors.Update(item);
+        context.Entry(entity).State = EntityState.Detached;
+
+        context.Vendors.Update(vendor);
         return await context.SaveChangesAsync(token);
     }
 
     protected override async Task<int> DeleteAsync(VendorCommand command, CancellationToken token)
     {
-        var item = await context.Vendors.FindAsync(command.Id, token);
-        if (item == null)
+        var vendor = await context.Vendors.FindAsync(command.Argument, token);
+        if (vendor == null)
         {
             return 0;
         }
 
-        context.Vendors.Remove(item);
+        context.Vendors.Remove(vendor);
         return await context.SaveChangesAsync(token);
     }
 }

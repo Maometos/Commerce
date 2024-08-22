@@ -42,7 +42,7 @@ public class CategoryTest
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Create;
-        command.Name = "Accessories";
+        command.Argument = new Category() { Name = "Accessories" }; ;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
@@ -53,11 +53,13 @@ public class CategoryTest
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Update;
-        command.Id = 3;
-        command.Name = "Sport";
+        command.Argument = new Category() { Id = 3, Name = "Sport" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
+
+        var category = await context.Categories.FindAsync(3);
+        Assert.Equal("Sport", category!.Name);
     }
 
     [Fact]
@@ -65,7 +67,7 @@ public class CategoryTest
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Delete;
-        command.Id = 1;
+        command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);

@@ -42,7 +42,7 @@ public class BrandTest
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Create;
-        command.Name = "Gucci";
+        command.Argument = new Brand() { Name = "Gucci" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
@@ -53,11 +53,13 @@ public class BrandTest
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Update;
-        command.Id = 3;
-        command.Name = "Prada";
+        command.Argument = new Brand() { Id = 3, Name = "Prada" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
+
+        var brand = await context.Brands.FindAsync(3);
+        Assert.Equal("Prada", brand!.Name);
     }
 
     [Fact]
@@ -65,7 +67,7 @@ public class BrandTest
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Delete;
-        command.Id = 1;
+        command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);

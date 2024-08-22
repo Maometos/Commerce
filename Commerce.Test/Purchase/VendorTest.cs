@@ -43,8 +43,7 @@ public class VendorTest
     {
         var command = new VendorCommand();
         command.Action = CommandAction.Create;
-        command.Name = "Joe Blow";
-        command.Email = "joe.blow@email.com";
+        command.Argument = new Vendor() { Name = "Joe Blow", Email = "joe.blow@email.com" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
@@ -55,14 +54,14 @@ public class VendorTest
     {
         var command = new VendorCommand();
         command.Action = CommandAction.Update;
-        command.Id = 4;
-        command.Address = "Fake street";
+        command.Action = CommandAction.Update;
+        command.Argument = new Vendor() { Id = 4, Name = "Jane Smith", Email = "Jane.Smith@email.com", Country = "UK" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
 
         var vendor = await context.Vendors.FindAsync(4);
-        Assert.Equal("Fake street", vendor!.Address);
+        Assert.Equal("UK", vendor!.Country);
     }
 
     [Fact]
@@ -70,7 +69,7 @@ public class VendorTest
     {
         var command = new VendorCommand();
         command.Action = CommandAction.Delete;
-        command.Id = 1;
+        command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);

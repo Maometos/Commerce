@@ -42,9 +42,7 @@ public class ItemTest
     {
         var command = new ItemCommand();
         command.Action = CommandAction.Create;
-        command.Code = Guid.NewGuid().ToString();
-        command.Name = "Hat";
-        command.Price = 30;
+        command.Argument = new Item() { Code = Guid.NewGuid().ToString(), Name = "Hat", Price = 30 }; ;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
@@ -55,12 +53,14 @@ public class ItemTest
     {
         var command = new ItemCommand();
         command.Action = CommandAction.Update;
-        command.Id = 4;
-        command.Name = "Jacket";
-        command.Price = 160;
+        command.Argument = new Item() { Id = 4, Code = Guid.NewGuid().ToString(), Name = "Jacket", Price = 160 };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
+
+        var item = await context.Items.FindAsync(4);
+        Assert.Equal("Jacket", item!.Name);
+        Assert.Equal(160, item!.Price);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class ItemTest
     {
         var command = new ItemCommand();
         command.Action = CommandAction.Delete;
-        command.Id = 1;
+        command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);

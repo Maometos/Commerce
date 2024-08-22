@@ -42,8 +42,7 @@ public class CustomerTest
     {
         var command = new CustomerCommand();
         command.Action = CommandAction.Create;
-        command.Name = "Joe Blow";
-        command.Email = "joe.blow@email.com";
+        command.Argument = new Customer() { Name = "Joe Blow", Email = "joe.blow@email.com" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
@@ -54,14 +53,13 @@ public class CustomerTest
     {
         var command = new CustomerCommand();
         command.Action = CommandAction.Update;
-        command.Id = 4;
-        command.Address = "Fake street";
+        command.Argument = new Customer() { Id = 4, Name = "Jane Smith", Email = "Jane.Smith@email.com", Country = "UK" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
 
         var customer = await context.Customers.FindAsync(4);
-        Assert.Equal("Fake street", customer!.Address);
+        Assert.Equal("UK", customer!.Country);
     }
 
     [Fact]
@@ -69,7 +67,7 @@ public class CustomerTest
     {
         var command = new CustomerCommand();
         command.Action = CommandAction.Delete;
-        command.Id = 1;
+        command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);

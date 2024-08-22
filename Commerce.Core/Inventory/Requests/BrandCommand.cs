@@ -4,6 +4,5 @@ namespace Commerce.Core.Identity.Requests;
 
 public class BrandCommand : Command
 {
-    public int Id { get; set; }
-    public string? Name { get; set; }
+    public object? Argument { get; set; }
 }

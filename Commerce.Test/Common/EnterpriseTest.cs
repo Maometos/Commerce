@@ -42,8 +42,7 @@ public class EnterpriseTest
     {
         var command = new EnterpriseCommand();
         command.Action = CommandAction.Create;
-        command.Name = "Intellectec";
-        command.Email = "contact@intellectec.net";
+        command.Argument = new Enterprise() { Name = "Intellectec", Email = "contact@intellectec.net" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
@@ -54,8 +53,7 @@ public class EnterpriseTest
     {
         var command = new EnterpriseCommand();
         command.Action = CommandAction.Update;
-        command.Id = 4;
-        command.Email = "support@canonical.com";
+        command.Argument = new Enterprise() { Id = 4, Name = "Canonical", Email = "support@canonical.com" };
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);
@@ -69,7 +67,7 @@ public class EnterpriseTest
     {
         var command = new EnterpriseCommand();
         command.Action = CommandAction.Delete;
-        command.Id = 1;
+        command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(1, result);

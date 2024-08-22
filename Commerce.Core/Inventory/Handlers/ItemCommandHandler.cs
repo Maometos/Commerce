@@ -2,6 +2,7 @@
 using Commerce.Core.Identity.Requests;
 using Commerce.Core.Inventory.Entities;
 using Commerce.Infrastructure.CQRS;
+using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Identity.Handlers;
 
@@ -16,13 +17,11 @@ public class ItemCommandHandler : CommandHandler<ItemCommand>
 
     protected override async Task<int> CreateAsync(ItemCommand command, CancellationToken token)
     {
-        var item = new Item();
-        item.Code = command.Code!;
-        item.Name = command.Name!;
-        item.Unit = command.Unit!;
-        item.Cost = command.Cost ?? 0;
-        item.Price = command.Price ?? 0;
-        item.Description = command.Description!;
+        var item = command.Argument as Item;
+        if (item == null)
+        {
+            return 0;
+        }
 
         context.Items.Add(item);
         return await context.SaveChangesAsync();
@@ -30,18 +29,19 @@ public class ItemCommandHandler : CommandHandler<ItemCommand>
 
     protected override async Task<int> UpdateAsync(ItemCommand command, CancellationToken token)
     {
-        var item = await context.Items.FindAsync(command.Id, token);
+        var item = command.Argument as Item;
         if (item == null)
         {
             return 0;
         }
 
-        item.Code = command.Code ?? item.Code;
-        item.Name = command.Name ?? item.Name;
-        item.Unit = command.Unit ?? item.Unit;
-        item.Cost = command.Cost ?? item.Cost;
-        item.Price = command.Price ?? item.Price;
-        item.Description = command.Description ?? item.Description;
+        var entity = await context.Items.FindAsync(item.Id, token);
+        if (entity == null)
+        {
+            return 0;
+        }
+
+        context.Entry(entity).State = EntityState.Detached;
 
         context.Items.Update(item);
         return await context.SaveChangesAsync(token);
@@ -49,7 +49,7 @@ public class ItemCommandHandler : CommandHandler<ItemCommand>
 
     protected override async Task<int> DeleteAsync(ItemCommand command, CancellationToken token)
     {
-        var item = await context.Items.FindAsync(command.Id, token);
+        var item = await context.Items.FindAsync(command.Argument, token);
         if (item == null)
         {
             return 0;
