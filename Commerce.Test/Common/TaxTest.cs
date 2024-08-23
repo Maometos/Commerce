@@ -23,52 +23,58 @@ public class TaxTest
         dispatcher = new EventDispatcher();
         dispatcher.AddService(context);
         dispatcher.AddHandler<TaxCommandHandler>();
+        dispatcher.AddHandler<TaxQueryHandler>();
 
-        var tax1 = new Tax() { Name = "Quebec sales Tax" };
-        tax1.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
-        tax1.Rates.Add(new TaxRate() { Name = "QST", Value = 9.975 });
+        var tax1 = new Tax() { Name = "Ontario sales tax" };
+        tax1.Rates.Add(new TaxRate() { Name = "HST", Value = 13 });
 
-        var tax2 = new Tax() { Name = "Ontario sales tax" };
-        tax2.Rates.Add(new TaxRate() { Name = "HST", Value = 8 });
+        var tax2 = new Tax() { Name = "Alberta sales tax" };
+        tax2.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
 
-        var tax3 = new Tax() { Name = "Exempted sales tax" };
+        var tax3 = new Tax() { Name = "Saskatchewan sales Tax" };
+        tax3.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
+        tax3.Rates.Add(new TaxRate() { Name = "PST", Value = 6 });
+
+        var tax4 = new Tax() { Name = "Quebec sales Tax" };
+        tax4.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
+        tax4.Rates.Add(new TaxRate() { Name = "QST", Value = 9.975 });
 
         context.Taxes.Add(tax1);
         context.Taxes.Add(tax2);
         context.Taxes.Add(tax3);
+        context.Taxes.Add(tax4);
         context.SaveChanges();
     }
 
     [Fact]
     public async void TestCreating()
     {
-        var tax = new Tax() { Name = "France sales tax" };
-        tax.Rates.Add(new TaxRate() { Name = "TVA", Value = 20 });
+        var tax = new Tax() { Name = "Manitoba sales tax" };
+        tax.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
+        tax.Rates.Add(new TaxRate() { Name = "RST", Value = 7 });
 
         var command = new TaxCommand();
         command.Action = CommandAction.Create;
         command.Argument = tax;
 
         var result = await dispatcher.DispatchAsync(command);
-        Assert.Equal(2, result);
+        Assert.Equal(3, result);
     }
 
     [Fact]
     public async void TestUpdating()
     {
-        var tax = new Tax() { Id = 2, Name = "Alberta sales tax" };
-        tax.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
-
+        var tax = new Tax() { Id = 4, Name = "Exempted sales tax" };
         var command = new TaxCommand();
         command.Action = CommandAction.Update;
         command.Argument = tax;
 
         var result = await dispatcher.DispatchAsync(command);
-        Assert.Equal(2, result);
+        Assert.Equal(1, result);
 
-        tax = await context.Taxes.FindAsync(2);
-        Assert.Equal("Alberta sales tax", tax!.Name);
-        Assert.Equal("GST", tax!.Rates[0].Name);
+        tax = await context.Taxes.FindAsync(4);
+        Assert.Equal("Exempted sales tax", tax!.Name);
+        Assert.Empty(tax.Rates);
     }
 
     [Fact]
@@ -79,6 +85,90 @@ public class TaxTest
         command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
-        Assert.Equal(3, result);
+        Assert.Equal(2, result);
+    }
+
+    [Fact]
+    public async void TestFinding()
+    {
+        var query = new TaxQuery();
+        query.Action = QueryAction.Find;
+        query.Id = 1;
+
+        var tax = await dispatcher.DispatchAsync(query) as Tax;
+        Assert.NotNull(tax);
+        Assert.Equal("Ontario sales tax", tax.Name);
+    }
+
+    [Fact]
+    public async void TestFiltering()
+    {
+        var query = new TaxQuery();
+        query.Action = QueryAction.List;
+        query.Name = "Alberta sales tax";
+
+        var list = await dispatcher.DispatchAsync(query) as List<Tax>;
+        Assert.NotNull(list);
+        Assert.Single(list);
+    }
+
+    [Fact]
+    public async void TestSorting()
+    {
+        var query = new TaxQuery();
+        query.Action = QueryAction.List;
+        query.Sort = "Name";
+
+        var list = await dispatcher.DispatchAsync(query) as List<Tax>;
+        Assert.NotNull(list);
+
+        var tax1 = list[0];
+        var tax2 = list[1];
+        var tax3 = list[2];
+        var tax4 = list[3];
+
+        Assert.Equal("Alberta sales tax", tax1.Name);
+        Assert.Equal("Ontario sales tax", tax2.Name);
+        Assert.Equal("Quebec sales Tax", tax3.Name);
+        Assert.Equal("Saskatchewan sales Tax", tax4.Name);
+    }
+
+    [Fact]
+    public async void TestReverseSorting()
+    {
+        var query = new TaxQuery();
+        query.Action = QueryAction.List;
+        query.Sort = "Name";
+        query.Reverse = true;
+
+        var list = await dispatcher.DispatchAsync(query) as List<Tax>;
+        Assert.NotNull(list);
+
+        var tax1 = list[0];
+        var tax2 = list[1];
+        var tax3 = list[2];
+        var tax4 = list[3];
+
+        Assert.Equal("Saskatchewan sales Tax", tax1.Name);
+        Assert.Equal("Quebec sales Tax", tax2.Name);
+        Assert.Equal("Ontario sales tax", tax3.Name);
+        Assert.Equal("Alberta sales tax", tax4.Name);
+    }
+
+    [Fact]
+    public async void TestPaginating()
+    {
+        var query = new TaxQuery();
+        query.Action = QueryAction.List;
+        query.Page = 2;
+        query.Limit = 2;
+
+        var list = await dispatcher.DispatchAsync(query) as List<Tax>;
+        Assert.NotNull(list);
+
+        var tax1 = list[0];
+        var tax2 = list[1];
+        Assert.Equal("Saskatchewan sales Tax", tax1.Name);
+        Assert.Equal("Quebec sales Tax", tax2.Name);
     }
 }
