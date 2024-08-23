@@ -4,6 +4,25 @@ namespace Commerce.Core.Common;
 
 public static class QueryExtension
 {
+    public static IQueryable<TEntity> Filter<TEntity>(this IQueryable<TEntity> queryable, string attribute, string value)
+    {
+        var type = typeof(TEntity);
+        var property = type.GetProperty(attribute);
+
+        if (property != null)
+        {
+            var parameter = Expression.Parameter(type, "e");
+            var member = Expression.MakeMemberAccess(parameter, property);
+            var constant = Expression.Constant(value);
+            var equality = Expression.Equal(member, constant);
+            var lambda = Expression.Lambda<Func<TEntity, bool>>(equality, parameter);
+
+            queryable = queryable.Where(lambda);
+        }
+
+        return queryable;
+    }
+
     public static IQueryable<TEntity> Sort<TEntity>(this IQueryable<TEntity> queryable, string attribute, bool reverse = false)
     {
         var type = typeof(TEntity);
