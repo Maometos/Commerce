@@ -17,9 +17,9 @@ public class CategoryQueryHandler : QueryHandler<CategoryQuery, Category>
 
     protected override async Task<Category?> FindAsync(CategoryQuery query, CancellationToken token)
     {
-        if (query.Id > 0)
+        if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Categories.FindAsync(query.Id, token);
+            return await context.Categories.FindAsync(query.Parameters["Id"], token);
         }
 
         return null;
@@ -28,16 +28,27 @@ public class CategoryQueryHandler : QueryHandler<CategoryQuery, Category>
     protected override Task<List<Category>> ListAsync(CategoryQuery query, CancellationToken token)
     {
         var categories = context.Categories.AsQueryable();
-        if (!string.IsNullOrEmpty(query.Name))
+        if (query.Parameters.ContainsKey("Name"))
         {
-            categories = categories.Where(user => user.Name.ToLower().Contains(query.Name.ToLower()));
+            categories = categories.Filter("Name", query.Parameters["Name"]);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
         {
-            categories = categories.Sort(query.Sort, query.Reverse);
+            var reverse = false;
+            var sort = query.Sort.Trim('-');
+            if (sort.Length != query.Sort.Length)
+            {
+                reverse = true;
+            }
+            categories = categories.Sort(sort, reverse);
         }
 
-        return categories.Paginate(query.Page, query.Limit).ToListAsync(token);
+        if (query.Offset > 0 && query.Limit > 0)
+        {
+            categories = categories.Skip(query.Offset).Take(query.Limit);
+        }
+
+        return categories.ToListAsync(token);
     }
 }

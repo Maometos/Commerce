@@ -25,10 +25,10 @@ public class EnterpriseTest
         dispatcher.AddHandler<EnterpriseCommandHandler>();
         dispatcher.AddHandler<EnterpriseQueryHandler>();
 
-        var enterprise1 = new Enterprise() { Id = 1, Name = "Microsoft", Email = "contact@microsoft.com" };
-        var enterprise2 = new Enterprise() { Id = 2, Name = "Oracle", Email = "contact@oracle.com" };
-        var enterprise3 = new Enterprise() { Id = 3, Name = "Adobe", Email = "contact@adobe.com" };
-        var enterprise4 = new Enterprise() { Id = 4, Name = "Canonical", Email = "contact@canonical.com" };
+        var enterprise1 = new Enterprise() { Name = "Microsoft", Email = "contact@microsoft.com" };
+        var enterprise2 = new Enterprise() { Name = "Oracle", Email = "contact@oracle.com" };
+        var enterprise3 = new Enterprise() { Name = "Adobe", Email = "contact@adobe.com" };
+        var enterprise4 = new Enterprise() { Name = "Canonical", Email = "contact@canonical.com" };
 
         context.Enterprises.Add(enterprise1);
         context.Enterprises.Add(enterprise2);
@@ -78,7 +78,7 @@ public class EnterpriseTest
     {
         var query = new EnterpriseQuery();
         query.Action = QueryAction.Find;
-        query.Id = 1;
+        query.Parameters["Id"] = 1;
 
         var enterprise = await dispatcher.DispatchAsync(query) as Enterprise;
         Assert.NotNull(enterprise);
@@ -90,7 +90,7 @@ public class EnterpriseTest
     {
         var query = new EnterpriseQuery();
         query.Action = QueryAction.List;
-        query.Name = "Canonical";
+        query.Parameters["Name"] = "Canonical";
 
         var list = await dispatcher.DispatchAsync(query) as List<Enterprise>;
         Assert.NotNull(list);
@@ -123,8 +123,7 @@ public class EnterpriseTest
     {
         var query = new EnterpriseQuery();
         query.Action = QueryAction.List;
-        query.Sort = "Name";
-        query.Reverse = true;
+        query.Sort = "-Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Enterprise>;
         Assert.NotNull(list);
@@ -145,7 +144,7 @@ public class EnterpriseTest
     {
         var query = new EnterpriseQuery();
         query.Action = QueryAction.List;
-        query.Page = 2;
+        query.Offset = 2;
         query.Limit = 2;
 
         var list = await dispatcher.DispatchAsync(query) as List<Enterprise>;

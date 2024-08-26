@@ -17,19 +17,21 @@ public class CustomerQueryHandler : QueryHandler<CustomerQuery, Customer>
 
     protected override async Task<Customer?> FindAsync(CustomerQuery query, CancellationToken token)
     {
-        if (query.Id > 0)
+        if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Customers.FindAsync(query.Id, token);
+            return await context.Customers.FindAsync(query.Parameters["Id"], token);
         }
 
-        if (!string.IsNullOrEmpty(query.Email))
+        if (query.Parameters.ContainsKey("Email"))
         {
-            return await context.Customers.FirstOrDefaultAsync(customer => customer.Email!.ToLower() == query.Email.ToLower(), token);
+            var email = query.Parameters["Email"] as string;
+            return await context.Customers.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == email!.ToLower(), token);
         }
 
-        if (!string.IsNullOrEmpty(query.Phone))
+        if (query.Parameters.ContainsKey("Phone"))
         {
-            return await context.Customers.FirstOrDefaultAsync(customer => customer.Phone!.ToLower() == query.Phone.ToLower(), token);
+            var phone = query.Parameters["Phone"] as string;
+            return await context.Customers.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == phone!.ToLower(), token);
         }
 
         return null;
@@ -38,41 +40,27 @@ public class CustomerQueryHandler : QueryHandler<CustomerQuery, Customer>
     protected override Task<List<Customer>> ListAsync(CustomerQuery query, CancellationToken token)
     {
         var customers = context.Customers.AsQueryable();
-        if (!string.IsNullOrEmpty(query.Name))
+        foreach (var parameter in query.Parameters)
         {
-            customers = customers.Where(customer => customer.Name.ToLower().Contains(query.Name.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Email))
-        {
-            customers = customers.Where(customer => customer.Email!.ToLower().Contains(query.Email.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Phone))
-        {
-            customers = customers.Where(customer => customer.Phone!.ToLower().Contains(query.Phone.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Locality))
-        {
-            customers = customers.Where(customer => customer.Locality!.ToLower().Contains(query.Locality.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Territory))
-        {
-            customers = customers.Where(customer => customer.Territory!.ToLower().Contains(query.Territory.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Country))
-        {
-            customers = customers.Where(customer => customer.Country!.ToLower().Contains(query.Country.ToLower()));
+            customers = customers.Filter(parameter.Key, parameter.Value);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
         {
-            customers = customers.Sort(query.Sort, query.Reverse);
+            var reverse = false;
+            var sort = query.Sort.Trim('-');
+            if (sort.Length != query.Sort.Length)
+            {
+                reverse = true;
+            }
+            customers = customers.Sort(sort, reverse);
         }
 
-        return customers.Paginate(query.Page, query.Limit).ToListAsync(token);
+        if (query.Offset > 0 && query.Limit > 0)
+        {
+            customers = customers.Skip(query.Offset).Take(query.Limit);
+        }
+
+        return customers.ToListAsync(token);
     }
 }

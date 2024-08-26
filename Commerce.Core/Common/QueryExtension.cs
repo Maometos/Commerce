@@ -4,7 +4,7 @@ namespace Commerce.Core.Common;
 
 public static class QueryExtension
 {
-    public static IQueryable<TEntity> Filter<TEntity>(this IQueryable<TEntity> queryable, string attribute, string value)
+    public static IQueryable<TEntity> Filter<TEntity>(this IQueryable<TEntity> queryable, string attribute, object value)
     {
         var type = typeof(TEntity);
         var property = type.GetProperty(attribute);

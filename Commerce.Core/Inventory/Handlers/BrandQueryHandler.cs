@@ -17,9 +17,9 @@ public class BrandQueryHandler : QueryHandler<BrandQuery, Brand>
 
     protected override async Task<Brand?> FindAsync(BrandQuery query, CancellationToken token)
     {
-        if (query.Id > 0)
+        if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Brands.FindAsync(query.Id, token);
+            return await context.Brands.FindAsync(query.Parameters["Id"], token);
         }
 
         return null;
@@ -28,16 +28,27 @@ public class BrandQueryHandler : QueryHandler<BrandQuery, Brand>
     protected override Task<List<Brand>> ListAsync(BrandQuery query, CancellationToken token)
     {
         var brands = context.Brands.AsQueryable();
-        if (!string.IsNullOrEmpty(query.Name))
+        if (query.Parameters.ContainsKey("Name"))
         {
-            brands = brands.Where(user => user.Name.ToLower().Contains(query.Name.ToLower()));
+            brands = brands.Filter("Name", query.Parameters["Name"]);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
         {
-            brands = brands.Sort(query.Sort, query.Reverse);
+            var reverse = false;
+            var sort = query.Sort.Trim('-');
+            if (sort.Length != query.Sort.Length)
+            {
+                reverse = true;
+            }
+            brands = brands.Sort(sort, reverse);
         }
 
-        return brands.Paginate(query.Page, query.Limit).ToListAsync(token);
+        if (query.Offset > 0 && query.Limit > 0)
+        {
+            brands = brands.Skip(query.Offset).Take(query.Limit);
+        }
+
+        return brands.ToListAsync(token);
     }
 }

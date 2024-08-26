@@ -16,9 +16,9 @@ public class TaxQueryHandler : QueryHandler<TaxQuery, Tax>
 
     protected override async Task<Tax?> FindAsync(TaxQuery query, CancellationToken token)
     {
-        if (query.Id > 0)
+        if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Taxes.FindAsync(query.Id, token);
+            return await context.Taxes.FindAsync(query.Parameters["Id"], token);
         }
 
         return null;
@@ -26,17 +26,28 @@ public class TaxQueryHandler : QueryHandler<TaxQuery, Tax>
 
     protected override Task<List<Tax>> ListAsync(TaxQuery query, CancellationToken token)
     {
-        var enterprises = context.Taxes.AsQueryable();
-        if (!string.IsNullOrEmpty(query.Name))
+        var taxes = context.Taxes.AsQueryable();
+        if (query.Parameters.ContainsKey("Name"))
         {
-            enterprises = enterprises.Where(enterprise => enterprise.Name.ToLower().Contains(query.Name.ToLower()));
+            taxes = taxes.Filter("Name", (string)query.Parameters["Name"]);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
         {
-            enterprises = enterprises.Sort(query.Sort, query.Reverse);
+            var reverse = false;
+            var sort = query.Sort.Trim('-');
+            if (sort.Length != query.Sort.Length)
+            {
+                reverse = true;
+            }
+            taxes = taxes.Sort(sort, reverse);
         }
 
-        return enterprises.Paginate(query.Page, query.Limit).ToListAsync(token);
+        if (query.Offset > 0 && query.Limit > 0)
+        {
+            taxes = taxes.Skip(query.Offset).Take(query.Limit);
+        }
+
+        return taxes.ToListAsync(token);
     }
 }

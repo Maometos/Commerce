@@ -93,7 +93,7 @@ public class TaxTest
     {
         var query = new TaxQuery();
         query.Action = QueryAction.Find;
-        query.Id = 1;
+        query.Parameters["Id"] = 1;
 
         var tax = await dispatcher.DispatchAsync(query) as Tax;
         Assert.NotNull(tax);
@@ -105,7 +105,7 @@ public class TaxTest
     {
         var query = new TaxQuery();
         query.Action = QueryAction.List;
-        query.Name = "Alberta sales tax";
+        query.Parameters["Name"] = "Alberta sales tax";
 
         var list = await dispatcher.DispatchAsync(query) as List<Tax>;
         Assert.NotNull(list);
@@ -138,8 +138,7 @@ public class TaxTest
     {
         var query = new TaxQuery();
         query.Action = QueryAction.List;
-        query.Sort = "Name";
-        query.Reverse = true;
+        query.Sort = "-Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Tax>;
         Assert.NotNull(list);
@@ -160,7 +159,7 @@ public class TaxTest
     {
         var query = new TaxQuery();
         query.Action = QueryAction.List;
-        query.Page = 2;
+        query.Offset = 2;
         query.Limit = 2;
 
         var list = await dispatcher.DispatchAsync(query) as List<Tax>;

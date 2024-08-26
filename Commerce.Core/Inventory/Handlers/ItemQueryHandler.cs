@@ -17,14 +17,15 @@ public class ItemQueryHandler : QueryHandler<ItemQuery, Item>
 
     protected override async Task<Item?> FindAsync(ItemQuery query, CancellationToken token)
     {
-        if (query.Id > 0)
+        if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Items.FindAsync(query.Id, token);
+            return await context.Items.FindAsync(query.Parameters["Id"], token);
         }
 
-        if (!string.IsNullOrEmpty(query.Code))
+        if (query.Parameters.ContainsKey("Code"))
         {
-            return await context.Items.FirstOrDefaultAsync(item => item.Code.ToLower() == query.Code.ToLower(), token);
+            var code = query.Parameters["Code"] as string;
+            return await context.Items.FirstOrDefaultAsync(enterprise => enterprise.Code!.ToLower() == code!.ToLower(), token);
         }
 
         return null;
@@ -33,31 +34,27 @@ public class ItemQueryHandler : QueryHandler<ItemQuery, Item>
     protected override Task<List<Item>> ListAsync(ItemQuery query, CancellationToken token)
     {
         var items = context.Items.AsQueryable();
-        if (!string.IsNullOrEmpty(query.Name))
+        foreach (var parameter in query.Parameters)
         {
-            items = items.Where(item => item.Name.ToLower().Contains(query.Name.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Unit))
-        {
-            items = items.Where(item => item.Unit!.ToLower().Contains(query.Unit.ToLower()));
-        }
-
-        if (query.Cost != null)
-        {
-            items = items.Where(item => item.Cost == query.Cost);
-        }
-
-        if (query.Price != null)
-        {
-            items = items.Where(item => item.Price == query.Price);
+            items = items.Filter(parameter.Key, parameter.Value);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
         {
-            items = items.Sort(query.Sort, query.Reverse);
+            var reverse = false;
+            var sort = query.Sort.Trim('-');
+            if (sort.Length != query.Sort.Length)
+            {
+                reverse = true;
+            }
+            items = items.Sort(sort, reverse);
         }
 
-        return items.Paginate(query.Page, query.Limit).ToListAsync(token);
+        if (query.Offset > 0 && query.Limit > 0)
+        {
+            items = items.Skip(query.Offset).Take(query.Limit);
+        }
+
+        return items.ToListAsync(token);
     }
 }

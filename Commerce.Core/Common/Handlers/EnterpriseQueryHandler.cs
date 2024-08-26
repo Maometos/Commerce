@@ -16,19 +16,21 @@ public class EnterpriseQueryHandler : QueryHandler<EnterpriseQuery, Enterprise>
 
     protected override async Task<Enterprise?> FindAsync(EnterpriseQuery query, CancellationToken token)
     {
-        if (query.Id > 0)
+        if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Enterprises.FindAsync(query.Id, token);
+            return await context.Enterprises.FindAsync(query.Parameters["Id"], token);
         }
 
-        if (!string.IsNullOrEmpty(query.Email))
+        if (query.Parameters.ContainsKey("Email"))
         {
-            return await context.Enterprises.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == query.Email.ToLower(), token);
+            var email = query.Parameters["Email"] as string;
+            return await context.Enterprises.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == email!.ToLower(), token);
         }
 
-        if (!string.IsNullOrEmpty(query.Phone))
+        if (query.Parameters.ContainsKey("Phone"))
         {
-            return await context.Enterprises.FirstOrDefaultAsync(enterprise => enterprise.Phone!.ToLower() == query.Phone.ToLower(), token);
+            var phone = query.Parameters["Phone"] as string;
+            return await context.Enterprises.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == phone!.ToLower(), token);
         }
 
         return null;
@@ -37,41 +39,28 @@ public class EnterpriseQueryHandler : QueryHandler<EnterpriseQuery, Enterprise>
     protected override Task<List<Enterprise>> ListAsync(EnterpriseQuery query, CancellationToken token)
     {
         var enterprises = context.Enterprises.AsQueryable();
-        if (!string.IsNullOrEmpty(query.Name))
-        {
-            enterprises = enterprises.Where(enterprise => enterprise.Name.ToLower().Contains(query.Name.ToLower()));
-        }
 
-        if (!string.IsNullOrEmpty(query.Email))
+        foreach (var parameter in query.Parameters)
         {
-            enterprises = enterprises.Where(enterprise => enterprise.Email!.ToLower().Contains(query.Email.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Phone))
-        {
-            enterprises = enterprises.Where(enterprise => enterprise.Phone!.ToLower().Contains(query.Phone.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Locality))
-        {
-            enterprises = enterprises.Where(enterprise => enterprise.Locality!.ToLower().Contains(query.Locality.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Territory))
-        {
-            enterprises = enterprises.Where(enterprise => enterprise.Territory!.ToLower().Contains(query.Territory.ToLower()));
-        }
-
-        if (!string.IsNullOrEmpty(query.Country))
-        {
-            enterprises = enterprises.Where(enterprise => enterprise.Country!.ToLower().Contains(query.Country.ToLower()));
+            enterprises = enterprises.Filter(parameter.Key, parameter.Value);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
         {
-            enterprises = enterprises.Sort(query.Sort, query.Reverse);
+            var reverse = false;
+            var sort = query.Sort.Trim('-');
+            if (sort.Length != query.Sort.Length)
+            {
+                reverse = true;
+            }
+            enterprises = enterprises.Sort(sort, reverse);
         }
 
-        return enterprises.Paginate(query.Page, query.Limit).ToListAsync(token);
+        if (query.Offset > 0 && query.Limit > 0)
+        {
+            enterprises = enterprises.Skip(query.Offset).Take(query.Limit);
+        }
+
+        return enterprises.ToListAsync(token);
     }
 }

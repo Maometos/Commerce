@@ -25,10 +25,10 @@ public class CustomerTest
         dispatcher.AddHandler<CustomerCommandHandler>();
         dispatcher.AddHandler<CustomerQueryHandler>();
 
-        var customer1 = new Customer() { Id = 1, Name = "John Doe", Email = "john.doe@email.com", Country = "Canada" };
-        var customer2 = new Customer() { Id = 2, Name = "Jane Doe", Email = "Jane.doe@email.com", Country = "Canada" };
-        var customer3 = new Customer() { Id = 3, Name = "John Smith", Email = "Jane.Smith@email.com", Country = "USA" };
-        var customer4 = new Customer() { Id = 4, Name = "Jane Smith", Email = "Jane.Smith@email.com", Country = "USA" };
+        var customer1 = new Customer() { Name = "John Doe", Email = "john.doe@email.com", Country = "Canada" };
+        var customer2 = new Customer() { Name = "Jane Doe", Email = "Jane.doe@email.com", Country = "Canada" };
+        var customer3 = new Customer() { Name = "John Smith", Email = "Jane.Smith@email.com", Country = "USA" };
+        var customer4 = new Customer() { Name = "Jane Smith", Email = "Jane.Smith@email.com", Country = "USA" };
 
         context.Customers.Add(customer1);
         context.Customers.Add(customer2);
@@ -78,7 +78,7 @@ public class CustomerTest
     {
         var query = new CustomerQuery();
         query.Action = QueryAction.Find;
-        query.Id = 1;
+        query.Parameters["Id"] = 1;
 
         var customer = await dispatcher.DispatchAsync(query) as Customer;
         Assert.NotNull(customer);
@@ -90,7 +90,7 @@ public class CustomerTest
     {
         var query = new CustomerQuery();
         query.Action = QueryAction.List;
-        query.Country = "Canada";
+        query.Parameters["Country"] = "Canada";
 
         var list = await dispatcher.DispatchAsync(query) as List<Customer>;
         Assert.NotNull(list);
@@ -123,8 +123,7 @@ public class CustomerTest
     {
         var query = new CustomerQuery();
         query.Action = QueryAction.List;
-        query.Sort = "Name";
-        query.Reverse = true;
+        query.Sort = "-Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Customer>;
         Assert.NotNull(list);
@@ -145,7 +144,7 @@ public class CustomerTest
     {
         var query = new CustomerQuery();
         query.Action = QueryAction.List;
-        query.Page = 2;
+        query.Offset = 2;
         query.Limit = 2;
 
         var list = await dispatcher.DispatchAsync(query) as List<Customer>;

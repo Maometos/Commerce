@@ -25,10 +25,10 @@ public class ItemTest
         dispatcher.AddHandler<ItemCommandHandler>();
         dispatcher.AddHandler<ItemQueryHandler>();
 
-        var item1 = new Item() { Id = 1, Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50 };
-        var item2 = new Item() { Id = 2, Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20 };
-        var item3 = new Item() { Id = 3, Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70 };
-        var item4 = new Item() { Id = 4, Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50 };
+        var item1 = new Item() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50 };
+        var item2 = new Item() { Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20 };
+        var item3 = new Item() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70 };
+        var item4 = new Item() { Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50 };
 
         context.Items.Add(item1);
         context.Items.Add(item2);
@@ -79,7 +79,7 @@ public class ItemTest
     {
         var query = new ItemQuery();
         query.Action = QueryAction.Find;
-        query.Id = 1;
+        query.Parameters["Id"] = 1;
 
         var item = await dispatcher.DispatchAsync(query) as Item;
         Assert.NotNull(item);
@@ -91,7 +91,7 @@ public class ItemTest
     {
         var query = new ItemQuery();
         query.Action = QueryAction.List;
-        query.Price = 50;
+        query.Parameters["Price"] = 50m;
 
         var list = await dispatcher.DispatchAsync(query) as List<Item>;
         Assert.NotNull(list);
@@ -124,8 +124,7 @@ public class ItemTest
     {
         var query = new ItemQuery();
         query.Action = QueryAction.List;
-        query.Sort = "Name";
-        query.Reverse = true;
+        query.Sort = "-Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Item>;
         Assert.NotNull(list);
@@ -146,7 +145,7 @@ public class ItemTest
     {
         var query = new ItemQuery();
         query.Action = QueryAction.List;
-        query.Page = 2;
+        query.Offset = 2;
         query.Limit = 2;
 
         var list = await dispatcher.DispatchAsync(query) as List<Item>;

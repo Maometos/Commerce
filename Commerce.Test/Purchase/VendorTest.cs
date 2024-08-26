@@ -26,10 +26,10 @@ public class VendorTest
         dispatcher.AddHandler<VendorCommandHandler>();
         dispatcher.AddHandler<VendorQueryHandler>();
 
-        var vendor1 = new Vendor() { Id = 1, Name = "John Doe", Email = "john.doe@email.com", Country = "Canada" };
-        var vendor2 = new Vendor() { Id = 2, Name = "Jane Doe", Email = "Jane.doe@email.com", Country = "Canada" };
-        var vendor3 = new Vendor() { Id = 3, Name = "John Smith", Email = "Jane.Smith@email.com", Country = "USA" };
-        var vendor4 = new Vendor() { Id = 4, Name = "Jane Smith", Email = "Jane.Smith@email.com", Country = "USA" };
+        var vendor1 = new Vendor() { Name = "John Doe", Email = "john.doe@email.com", Country = "Canada" };
+        var vendor2 = new Vendor() { Name = "Jane Doe", Email = "Jane.doe@email.com", Country = "Canada" };
+        var vendor3 = new Vendor() { Name = "John Smith", Email = "Jane.Smith@email.com", Country = "USA" };
+        var vendor4 = new Vendor() { Name = "Jane Smith", Email = "Jane.Smith@email.com", Country = "USA" };
 
         context.Vendors.Add(vendor1);
         context.Vendors.Add(vendor2);
@@ -80,7 +80,7 @@ public class VendorTest
     {
         var query = new VendorQuery();
         query.Action = QueryAction.Find;
-        query.Id = 1;
+        query.Parameters["Id"] = 1;
 
         var vendor = await dispatcher.DispatchAsync(query) as Vendor;
         Assert.NotNull(vendor);
@@ -92,7 +92,7 @@ public class VendorTest
     {
         var query = new VendorQuery();
         query.Action = QueryAction.List;
-        query.Country = "Canada";
+        query.Parameters["Country"] = "Canada";
 
         var list = await dispatcher.DispatchAsync(query) as List<Vendor>;
         Assert.NotNull(list);
@@ -125,8 +125,7 @@ public class VendorTest
     {
         var query = new VendorQuery();
         query.Action = QueryAction.List;
-        query.Sort = "Name";
-        query.Reverse = true;
+        query.Sort = "-Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Vendor>;
         Assert.NotNull(list);
@@ -147,7 +146,7 @@ public class VendorTest
     {
         var query = new VendorQuery();
         query.Action = QueryAction.List;
-        query.Page = 2;
+        query.Offset = 2;
         query.Limit = 2;
 
         var list = await dispatcher.DispatchAsync(query) as List<Vendor>;

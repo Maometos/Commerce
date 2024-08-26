@@ -25,10 +25,10 @@ public class BrandTest
         dispatcher.AddHandler<BrandCommandHandler>();
         dispatcher.AddHandler<BrandQueryHandler>();
 
-        var brand1 = new Brand() { Id = 1, Name = "Dior" };
-        var brand2 = new Brand() { Id = 2, Name = "Zara" };
-        var brand3 = new Brand() { Id = 3, Name = "Boss" };
-        var brand4 = new Brand() { Id = 4, Name = "Nike" };
+        var brand1 = new Brand() { Name = "Dior" };
+        var brand2 = new Brand() { Name = "Zara" };
+        var brand3 = new Brand() { Name = "Boss" };
+        var brand4 = new Brand() { Name = "Nike" };
 
         context.Brands.Add(brand1);
         context.Brands.Add(brand2);
@@ -78,7 +78,7 @@ public class BrandTest
     {
         var query = new BrandQuery();
         query.Action = QueryAction.Find;
-        query.Id = 1;
+        query.Parameters["Id"] = 1;
 
         var brand = await dispatcher.DispatchAsync(query) as Brand;
         Assert.NotNull(brand);
@@ -90,7 +90,7 @@ public class BrandTest
     {
         var query = new BrandQuery();
         query.Action = QueryAction.List;
-        query.Name = "Boss";
+        query.Parameters["Name"] = "Boss";
 
         var list = await dispatcher.DispatchAsync(query) as List<Brand>;
         Assert.NotNull(list);
@@ -123,8 +123,7 @@ public class BrandTest
     {
         var query = new BrandQuery();
         query.Action = QueryAction.List;
-        query.Sort = "Name";
-        query.Reverse = true;
+        query.Sort = "-Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Brand>;
         Assert.NotNull(list);
@@ -145,7 +144,7 @@ public class BrandTest
     {
         var query = new BrandQuery();
         query.Action = QueryAction.List;
-        query.Page = 2;
+        query.Offset = 2;
         query.Limit = 2;
 
         var list = await dispatcher.DispatchAsync(query) as List<Brand>;

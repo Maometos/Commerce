@@ -25,10 +25,10 @@ public class CategoryTest
         dispatcher.AddHandler<CategoryCommandHandler>();
         dispatcher.AddHandler<CategoryQueryHandler>();
 
-        var category1 = new Category() { Id = 1, Name = "Shoes" };
-        var category2 = new Category() { Id = 2, Name = "Clothing" };
-        var category3 = new Category() { Id = 3, Name = "Underwear" };
-        var category4 = new Category() { Id = 4, Name = "Swimwear" };
+        var category1 = new Category() { Name = "Shoes" };
+        var category2 = new Category() { Name = "Clothing" };
+        var category3 = new Category() { Name = "Underwear" };
+        var category4 = new Category() { Name = "Swimwear" };
 
         context.Categories.Add(category1);
         context.Categories.Add(category2);
@@ -78,7 +78,7 @@ public class CategoryTest
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.Find;
-        query.Id = 1;
+        query.Parameters["Id"] = 1;
 
         var user = await dispatcher.DispatchAsync(query) as Category;
         Assert.NotNull(user);
@@ -90,7 +90,7 @@ public class CategoryTest
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.List;
-        query.Name = "Clothing";
+        query.Parameters["Name"] = "Clothing";
 
         var list = await dispatcher.DispatchAsync(query) as List<Category>;
         Assert.NotNull(list);
@@ -123,8 +123,7 @@ public class CategoryTest
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.List;
-        query.Sort = "Name";
-        query.Reverse = true;
+        query.Sort = "-Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Category>;
         Assert.NotNull(list);
@@ -145,7 +144,7 @@ public class CategoryTest
     {
         var query = new CategoryQuery();
         query.Action = QueryAction.List;
-        query.Page = 2;
+        query.Offset = 2;
         query.Limit = 2;
 
         var list = await dispatcher.DispatchAsync(query) as List<Category>;
