@@ -42,14 +42,4 @@ public static class QueryExtension
 
         return queryable;
     }
-
-    public static IQueryable<TEntity> Paginate<TEntity>(this IQueryable<TEntity> queryable, int page, int limit)
-    {
-        if (page > 0 && limit > 0)
-        {
-            return queryable.Skip((page - 1) * limit).Take(limit);
-        }
-
-        return queryable;
-    }
 }
