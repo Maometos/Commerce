@@ -7,4 +7,5 @@ public class CreditLine : TransactionLine
     public int CreditNoteId { get; set; }
 
     public CreditNote Note { get; set; } = null!;
+    public List<CreditLineTax> Taxes { get; set; } = []!;
 }

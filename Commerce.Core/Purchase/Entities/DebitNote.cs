@@ -8,6 +8,5 @@ public class DebitNote : Adjustment
 
     public Vendor Vendor { get; set; } = null!;
     public List<DebitLine> Lines { get; } = [];
-    public List<DebitTax> Taxes { get; } = [];
     public List<PurchaseRefund> Refunds { get; } = [];
 }

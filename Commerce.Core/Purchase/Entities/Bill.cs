@@ -8,6 +8,5 @@ public class Bill : Statement
 
     public Vendor Vendor { get; set; } = null!;
     public List<BillLine> Lines { get; } = [];
-    public List<BillTax> Taxes { get; } = [];
     public List<PurchasePayment> Payments { get; } = [];
 }

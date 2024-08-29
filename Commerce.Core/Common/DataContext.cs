@@ -19,20 +19,20 @@ public class DataContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<InvoiceLine> InvoiceLines { get; set; }
-    public DbSet<InvoiceTax> InvoiceTaxes { get; set; }
+    public DbSet<InvoiceLineTax> InvoiceLineTaxes { get; set; }
     public DbSet<SalePayment> SalePayments { get; set; }
     public DbSet<CreditNote> CreditNotes { get; set; }
     public DbSet<CreditLine> CreditLines { get; set; }
-    public DbSet<CreditTax> CreditTaxes { get; set; }
+    public DbSet<CreditLineTax> CreditLineTaxes { get; set; }
     public DbSet<SaleRefund> SaleRefunds { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
     public DbSet<Bill> Bills { get; set; }
     public DbSet<BillLine> BillLines { get; set; }
-    public DbSet<BillTax> BillTaxes { get; set; }
+    public DbSet<BillLineTax> BillLineTaxes { get; set; }
     public DbSet<PurchasePayment> PurchasePayments { get; set; }
     public DbSet<DebitNote> DebitNotes { get; set; }
     public DbSet<DebitLine> DebitLines { get; set; }
-    public DbSet<DebitTax> DebitTaxes { get; set; }
+    public DbSet<DebitLineTax> DebitLineTaxes { get; set; }
     public DbSet<PurchaseRefund> PurchaseRefunds { get; set; }
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)

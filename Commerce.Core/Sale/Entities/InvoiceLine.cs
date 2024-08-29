@@ -7,4 +7,5 @@ public class InvoiceLine : TransactionLine
     public int InvoiceId { get; set; }
 
     public Invoice Invoice { get; set; } = null!;
+    public List<InvoiceLineTax> Taxes { get; set; } = []!;
 }

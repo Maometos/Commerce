@@ -7,7 +7,7 @@ public abstract class Transaction
     public int Id { get; set; }
     public int EnterpriseId { get; set; }
     public string Reference { get; set; } = null!;
-    public DateTime Date { get; set; }
+    public DateTime Date { get; set; } = DateTime.Now;
 
     public Enterprise Enterprise { get; set; } = null!;
 }
