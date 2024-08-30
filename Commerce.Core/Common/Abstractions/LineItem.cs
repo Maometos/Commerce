@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class TransactionLine
+public abstract class LineItem
 {
     public int Id { get; set; }
     public int ItemId { get; set; }

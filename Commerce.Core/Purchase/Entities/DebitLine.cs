@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class DebitLine : TransactionLine
+public class DebitLine : LineItem
 {
     public int DebitNoteId { get; set; }
 
