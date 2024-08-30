@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Transaction
+public abstract class Document
 {
     public int Id { get; set; }
     public int EnterpriseId { get; set; }

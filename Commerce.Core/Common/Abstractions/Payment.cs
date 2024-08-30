@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Payment : Transaction
+public abstract class Payment : Document
 {
     public decimal InvoiceAmount { get; set; }
     public decimal PaymentAmount { get; set; }

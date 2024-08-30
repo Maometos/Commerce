@@ -2,10 +2,10 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Statement : Transaction
+public abstract class Statement : Document
 {
     public DateTime DueDate { get; set; }
-    public decimal SubTotal { get; set; }
+    public decimal Subtotal { get; set; }
     public decimal Total { get; set; }
     public StatementStatus Status { get; set; }
 }
