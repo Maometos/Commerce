@@ -29,14 +29,9 @@ public class InvoiceTest
         var customer1 = new Customer() { Id = 1, Name = "John Doe" };
         var customer2 = new Customer() { Id = 2, Name = "John Smith" };
 
-        var tax = new Tax() { Name = "Quebec sales Tax" };
-        tax.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
-        tax.Rates.Add(new TaxRate() { Name = "QST", Value = 9.975 });
-
         context.Enterprises.Add(enterprise);
         context.Customers.Add(customer1);
         context.Customers.Add(customer2);
-        context.Taxes.Add(tax);
         context.SaveChanges();
 
         var invoice1 = new Invoice() { Reference = Guid.NewGuid().ToString() };

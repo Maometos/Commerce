@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Common.Requests;
 
-public class TaxCommand : Command
+public class TaxGroupCommand : Command
 {
 }

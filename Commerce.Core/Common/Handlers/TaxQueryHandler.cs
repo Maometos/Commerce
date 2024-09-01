@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Common.Handlers;
 
-public class TaxQueryHandler : QueryHandler<TaxQuery, Tax>
+public class TaxQueryHandler : QueryHandler<TaxGroupQuery, TaxGroup>
 {
     private DataContext context;
 
@@ -14,22 +14,22 @@ public class TaxQueryHandler : QueryHandler<TaxQuery, Tax>
         this.context = context;
     }
 
-    protected override async Task<Tax?> FindAsync(TaxQuery query, CancellationToken token)
+    protected override async Task<TaxGroup?> FindAsync(TaxGroupQuery query, CancellationToken token)
     {
         if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Taxes.FindAsync(query.Parameters["Id"], token);
+            return await context.TaxGroups.FindAsync(query.Parameters["Id"], token);
         }
 
         return null;
     }
 
-    protected override Task<List<Tax>> ListAsync(TaxQuery query, CancellationToken token)
+    protected override Task<List<TaxGroup>> ListAsync(TaxGroupQuery query, CancellationToken token)
     {
-        var taxes = context.Taxes.AsQueryable();
+        var groups = context.TaxGroups.AsQueryable();
         if (query.Parameters.ContainsKey("Name"))
         {
-            taxes = taxes.Filter("Name", (string)query.Parameters["Name"]);
+            groups = groups.Filter("Name", (string)query.Parameters["Name"]);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
@@ -40,14 +40,14 @@ public class TaxQueryHandler : QueryHandler<TaxQuery, Tax>
             {
                 reverse = true;
             }
-            taxes = taxes.Sort(sort, reverse);
+            groups = groups.Sort(sort, reverse);
         }
 
         if (query.Offset > 0 && query.Limit > 0)
         {
-            taxes = taxes.Skip(query.Offset).Take(query.Limit);
+            groups = groups.Skip(query.Offset).Take(query.Limit);
         }
 
-        return taxes.ToListAsync(token);
+        return groups.ToListAsync(token);
     }
 }

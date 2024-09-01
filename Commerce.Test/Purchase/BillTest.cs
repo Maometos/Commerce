@@ -29,14 +29,9 @@ public class BillTest
         var vendor1 = new Vendor() { Id = 1, Name = "John Doe" };
         var vendor2 = new Vendor() { Id = 2, Name = "John Smith" };
 
-        var tax = new Tax() { Name = "Quebec sales Tax" };
-        tax.Rates.Add(new TaxRate() { Name = "GST", Value = 5 });
-        tax.Rates.Add(new TaxRate() { Name = "QST", Value = 9.975 });
-
         context.Enterprises.Add(enterprise);
         context.Vendors.Add(vendor1);
         context.Vendors.Add(vendor2);
-        context.Taxes.Add(tax);
         context.SaveChanges();
 
         var invoice1 = new Bill() { Reference = Guid.NewGuid().ToString() };

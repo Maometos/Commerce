@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Common.Handlers;
 
-public class TaxCommandHandler : CommandHandler<TaxCommand>
+public class TaxCommandHandler : CommandHandler<TaxGroupCommand>
 {
     private DataContext context;
 
@@ -14,27 +14,27 @@ public class TaxCommandHandler : CommandHandler<TaxCommand>
         this.context = context;
     }
 
-    protected override async Task<int> CreateAsync(TaxCommand command, CancellationToken token)
+    protected override async Task<int> CreateAsync(TaxGroupCommand command, CancellationToken token)
     {
-        var enterprise = command.Argument as Tax;
-        if (enterprise == null)
+        var group = command.Argument as TaxGroup;
+        if (group == null)
         {
             return 0;
         }
 
-        context.Taxes.Add(enterprise);
+        context.TaxGroups.Add(group);
         return await context.SaveChangesAsync();
     }
 
-    protected override async Task<int> UpdateAsync(TaxCommand command, CancellationToken token)
+    protected override async Task<int> UpdateAsync(TaxGroupCommand command, CancellationToken token)
     {
-        var enterprise = command.Argument as Tax;
-        if (enterprise == null)
+        var group = command.Argument as TaxGroup;
+        if (group == null)
         {
             return 0;
         }
 
-        var entity = await context.Taxes.FindAsync(enterprise.Id, token);
+        var entity = await context.TaxGroups.FindAsync(group.Id, token);
         if (entity == null)
         {
             return 0;
@@ -42,19 +42,19 @@ public class TaxCommandHandler : CommandHandler<TaxCommand>
 
         context.Entry(entity).State = EntityState.Detached;
 
-        context.Taxes.Update(enterprise);
+        context.TaxGroups.Update(group);
         return await context.SaveChangesAsync(token);
     }
 
-    protected override async Task<int> DeleteAsync(TaxCommand command, CancellationToken token)
+    protected override async Task<int> DeleteAsync(TaxGroupCommand command, CancellationToken token)
     {
-        var enterprise = await context.Taxes.FindAsync(command.Argument, token);
-        if (enterprise == null)
+        var group = await context.TaxGroups.FindAsync(command.Argument, token);
+        if (group == null)
         {
             return 0;
         }
 
-        context.Taxes.Remove(enterprise);
+        context.TaxGroups.Remove(group);
         return await context.SaveChangesAsync(token);
     }
 }

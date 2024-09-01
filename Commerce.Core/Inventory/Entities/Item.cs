@@ -23,7 +23,7 @@ public class Item
     public Discount? Discount { get; set; }
 
     [ForeignKey(nameof(SaleTaxId))]
-    public Tax? SateTax { get; set; }
+    public TaxGroup? SateTax { get; set; }
     [ForeignKey(nameof(PurchaseTaxId))]
-    public Tax? PurchaseTax { get; set; }
+    public TaxGroup? PurchaseTax { get; set; }
 }

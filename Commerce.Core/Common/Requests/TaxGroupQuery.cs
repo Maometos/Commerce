@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Common.Requests;
 
-public class TaxQuery : Query
+public class TaxGroupQuery : Query
 {
 }

@@ -3,8 +3,9 @@
 public class Tax
 {
     public int Id { get; set; }
+    public int TaxId { get; set; }
     public string Name { get; set; } = null!;
-    public string? Description { get; set; }
+    public decimal Rate { get; set; }
 
-    public List<TaxRate> Rates { get; } = [];
+    public TaxGroup Group { get; set; } = null!;
 }
