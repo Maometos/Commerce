@@ -4,7 +4,7 @@ using Commerce.Core.Purchase.Requests;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Sale.Handlers;
+namespace Commerce.Core.Purchase.Handlers;
 
 public class BillCommandHandler : CommandHandler<BillCommand>
 {

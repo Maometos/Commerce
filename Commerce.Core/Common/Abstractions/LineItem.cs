@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class LineItem
+public abstract class LineItem<TTax> where TTax : LineTax
 {
     public int Id { get; set; }
     public int ItemId { get; set; }
@@ -10,8 +10,8 @@ public abstract class LineItem
     public string Name { get; set; } = null!;
     public int Quantity { get; set; }
     public decimal Price { get; set; }
-    public double Discount { get; set; }
-    public decimal Amount { get; set; }
+    public decimal Discount { get; set; }
 
     public Item Item { get; set; } = null!;
+    public List<TTax> Taxes { get; set; } = [];
 }

@@ -6,6 +6,7 @@ using Commerce.Core.Sale.Requests;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
+using Xunit.Abstractions;
 
 namespace Commerce.Test.Sale;
 
@@ -13,9 +14,11 @@ public class InvoiceTest
 {
     private EventDispatcher dispatcher;
     private DataContext context;
+    private ITestOutputHelper output;
 
-    public InvoiceTest()
+    public InvoiceTest(ITestOutputHelper output)
     {
+        this.output = output;
         var options = new DbContextOptionsBuilder<DataContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
@@ -93,6 +96,19 @@ public class InvoiceTest
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(7, result);
+
+        invoice = await context.Invoices.FindAsync(5);
+        Assert.NotNull(invoice);
+        Assert.Equal(321.9m, invoice.Total);
+
+        output.WriteLine($"Subtotal: {invoice.Subtotal}");
+
+        foreach (var tax in invoice.Taxes)
+        {
+            output.WriteLine($"{tax.Key}: {tax.Value}");
+        }
+
+        output.WriteLine($"Total: {invoice.Total}");
     }
 
     [Fact]

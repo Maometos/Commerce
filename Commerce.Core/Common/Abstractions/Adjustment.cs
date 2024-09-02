@@ -2,9 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Adjustment : Document
+public abstract class Adjustment<TLine, TTax> : Transaction<TLine, TTax> where TLine : LineItem<TTax> where TTax : LineTax
 {
-    public decimal SubTotal { get; set; }
-    public decimal Total { get; set; }
     public AdjustmentStatus Status { get; set; }
 }

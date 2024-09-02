@@ -2,11 +2,10 @@
 
 namespace Commerce.Core.Sale.Entities;
 
-public class CreditNote : Adjustment
+public class CreditNote : Adjustment<CreditLine, CreditLineTax>
 {
     public int CustomerId { get; set; }
 
     public Customer Customer { get; set; } = null!;
-    public List<CreditLine> Lines { get; } = [];
     public List<SaleRefund> Refunds { get; } = [];
 }

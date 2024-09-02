@@ -2,11 +2,10 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class DebitNote : Adjustment
+public class DebitNote : Adjustment<DebitLine, DebitLineTax>
 {
     public int VendorId { get; set; }
 
     public Vendor Vendor { get; set; } = null!;
-    public List<DebitLine> Lines { get; } = [];
     public List<PurchaseRefund> Refunds { get; } = [];
 }
