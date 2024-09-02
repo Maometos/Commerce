@@ -84,8 +84,8 @@ public class InvoiceTest
         var gstTax2 = new InvoiceLineTax() { Name = "GST", Rate = 5, Line = line2 };
         var pstTax2 = new InvoiceLineTax() { Name = "PST", Rate = 6, Line = line2 };
 
-        line1.Taxes.Add(gstTax2);
-        line1.Taxes.Add(pstTax2);
+        line2.Taxes.Add(gstTax2);
+        line2.Taxes.Add(pstTax2);
 
         invoice.Lines.Add(line1);
         invoice.Lines.Add(line2);

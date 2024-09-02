@@ -84,8 +84,8 @@ public class BillTest
         var gstTax2 = new BillLineTax() { Name = "GST", Rate = 5, Line = line2 };
         var pstTax2 = new BillLineTax() { Name = "PST", Rate = 6, Line = line2 };
 
-        line1.Taxes.Add(gstTax2);
-        line1.Taxes.Add(pstTax2);
+        line2.Taxes.Add(gstTax2);
+        line2.Taxes.Add(pstTax2);
 
         bill.Lines.Add(line1);
         bill.Lines.Add(line2);
