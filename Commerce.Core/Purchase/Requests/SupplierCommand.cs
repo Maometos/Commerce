@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Purchase.Requests;
 
-public class VendorCommand : Command
+public class SupplierCommand : Command
 {
 }

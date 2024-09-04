@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Sale.Requests;
 
-public class VendorQuery : Query
+public class SupplierQuery : Query
 {
 }

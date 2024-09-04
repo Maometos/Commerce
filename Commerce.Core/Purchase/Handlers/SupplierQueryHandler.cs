@@ -6,43 +6,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Purchase.Handlers;
 
-public class VendorQueryHandler : QueryHandler<VendorQuery, Vendor>
+public class SupplierQueryHandler : QueryHandler<SupplierQuery, Supplier>
 {
     private DataContext context;
 
-    public VendorQueryHandler(DataContext context)
+    public SupplierQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<Vendor?> FindAsync(VendorQuery query, CancellationToken token)
+    protected override async Task<Supplier?> FindAsync(SupplierQuery query, CancellationToken token)
     {
         if (query.Parameters.ContainsKey("Id"))
         {
-            return await context.Vendors.FindAsync(query.Parameters["Id"], token);
+            return await context.Suppliers.FindAsync(query.Parameters["Id"], token);
         }
 
         if (query.Parameters.ContainsKey("Email"))
         {
             var email = query.Parameters["Email"] as string;
-            return await context.Vendors.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == email!.ToLower(), token);
+            return await context.Suppliers.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == email!.ToLower(), token);
         }
 
         if (query.Parameters.ContainsKey("Phone"))
         {
             var phone = query.Parameters["Phone"] as string;
-            return await context.Vendors.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == phone!.ToLower(), token);
+            return await context.Suppliers.FirstOrDefaultAsync(enterprise => enterprise.Email!.ToLower() == phone!.ToLower(), token);
         }
 
         return null;
     }
 
-    protected override Task<List<Vendor>> ListAsync(VendorQuery query, CancellationToken token)
+    protected override Task<List<Supplier>> ListAsync(SupplierQuery query, CancellationToken token)
     {
-        var vendors = context.Vendors.AsQueryable();
+        var suppliers = context.Suppliers.AsQueryable();
         foreach (var parameter in query.Parameters)
         {
-            vendors = vendors.Filter(parameter.Key, parameter.Value);
+            suppliers = suppliers.Filter(parameter.Key, parameter.Value);
         }
 
         if (!string.IsNullOrEmpty(query.Sort))
@@ -53,14 +53,14 @@ public class VendorQueryHandler : QueryHandler<VendorQuery, Vendor>
             {
                 reverse = true;
             }
-            vendors = vendors.Sort(sort, reverse);
+            suppliers = suppliers.Sort(sort, reverse);
         }
 
         if (query.Offset > 0 && query.Limit > 0)
         {
-            vendors = vendors.Skip(query.Offset).Take(query.Limit);
+            suppliers = suppliers.Skip(query.Offset).Take(query.Limit);
         }
 
-        return vendors.ToListAsync(token);
+        return suppliers.ToListAsync(token);
     }
 }

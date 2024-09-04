@@ -4,8 +4,8 @@ namespace Commerce.Core.Purchase.Entities;
 
 public class Bill : Statement<BillLine, BillLineTax>
 {
-    public int VendorId { get; set; }
+    public int SupplierId { get; set; }
 
-    public Vendor Vendor { get; set; } = null!;
+    public Supplier Supplier { get; set; } = null!;
     public List<PurchasePayment> Payments { get; } = [];
 }

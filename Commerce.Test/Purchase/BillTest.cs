@@ -29,34 +29,34 @@ public class BillTest
         dispatcher.AddHandler<BillCommandHandler>();
 
         var enterprise = new Enterprise() { Id = 1, Name = "FashionShop" };
-        var vendor1 = new Vendor() { Id = 1, Name = "John Doe" };
-        var vendor2 = new Vendor() { Id = 2, Name = "John Smith" };
+        var supplier1 = new Supplier() { Id = 1, Name = "John Doe" };
+        var supplier2 = new Supplier() { Id = 2, Name = "John Smith" };
 
         context.Enterprises.Add(enterprise);
-        context.Vendors.Add(vendor1);
-        context.Vendors.Add(vendor2);
+        context.Suppliers.Add(supplier1);
+        context.Suppliers.Add(supplier2);
         context.SaveChanges();
 
         var bill1 = new Bill() { Reference = Guid.NewGuid().ToString() };
         bill1.Enterprise = enterprise;
-        bill1.Vendor = vendor1;
+        bill1.Supplier = supplier1;
         bill1.Lines.Add(new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 2 });
         bill1.Lines.Add(new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 1 });
 
         var bill2 = new Bill() { Reference = Guid.NewGuid().ToString() };
         bill2.Enterprise = enterprise;
-        bill2.Vendor = vendor2;
+        bill2.Supplier = supplier2;
         bill2.Lines.Add(new BillLine() { Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20, Quantity = 5 });
         bill2.Lines.Add(new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50, Quantity = 2 });
 
         var bill3 = new Bill() { Reference = Guid.NewGuid().ToString() };
         bill3.Enterprise = enterprise;
-        bill3.Vendor = vendor1;
+        bill3.Supplier = supplier1;
         bill3.Lines.Add(new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Hat", Price = 30, Quantity = 1 });
 
         var bill4 = new Bill() { Reference = Guid.NewGuid().ToString() };
         bill4.Enterprise = enterprise;
-        bill4.Vendor = vendor2;
+        bill4.Supplier = supplier2;
         bill4.Lines.Add(new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Jacket", Price = 160, Quantity = 1 });
 
         context.Bills.Add(bill1);
@@ -71,7 +71,7 @@ public class BillTest
     {
         var bill = new Bill() { Reference = Guid.NewGuid().ToString() };
         bill.EnterpriseId = 1;
-        bill.VendorId = 1;
+        bill.SupplierId = 1;
 
         var line1 = new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 40, Quantity = 3 };
         var gstTax1 = new BillLineTax() { Name = "GST", Rate = 5, Line = line1 };

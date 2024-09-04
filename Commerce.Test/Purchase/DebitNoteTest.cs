@@ -29,34 +29,34 @@ public class DebitNoteTest
         dispatcher.AddHandler<DebitNoteCommandHandler>();
 
         var enterprise = new Enterprise() { Id = 1, Name = "FashionShop" };
-        var vendor1 = new Vendor() { Id = 1, Name = "John Doe" };
-        var vendor2 = new Vendor() { Id = 2, Name = "John Smith" };
+        var supplier1 = new Supplier() { Id = 1, Name = "John Doe" };
+        var supplier2 = new Supplier() { Id = 2, Name = "John Smith" };
 
         context.Enterprises.Add(enterprise);
-        context.Vendors.Add(vendor1);
-        context.Vendors.Add(vendor2);
+        context.Suppliers.Add(supplier1);
+        context.Suppliers.Add(supplier2);
         context.SaveChanges();
 
         var DebitNote1 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
         DebitNote1.Enterprise = enterprise;
-        DebitNote1.Vendor = vendor1;
+        DebitNote1.Supplier = supplier1;
         DebitNote1.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 2 });
         DebitNote1.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 1 });
 
         var DebitNote2 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
         DebitNote2.Enterprise = enterprise;
-        DebitNote2.Vendor = vendor2;
+        DebitNote2.Supplier = supplier2;
         DebitNote2.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20, Quantity = 5 });
         DebitNote2.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50, Quantity = 2 });
 
         var DebitNote3 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
         DebitNote3.Enterprise = enterprise;
-        DebitNote3.Vendor = vendor1;
+        DebitNote3.Supplier = supplier1;
         DebitNote3.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Hat", Price = 30, Quantity = 1 });
 
         var DebitNote4 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
         DebitNote4.Enterprise = enterprise;
-        DebitNote4.Vendor = vendor2;
+        DebitNote4.Supplier = supplier2;
         DebitNote4.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Jacket", Price = 160, Quantity = 1 });
 
         context.DebitNotes.Add(DebitNote1);
@@ -71,7 +71,7 @@ public class DebitNoteTest
     {
         var DebitNote = new DebitNote() { Reference = Guid.NewGuid().ToString() };
         DebitNote.EnterpriseId = 1;
-        DebitNote.VendorId = 1;
+        DebitNote.SupplierId = 1;
 
         var line1 = new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 40, Quantity = 3 };
         var gstTax1 = new DebitLineTax() { Name = "GST", Rate = 5, Line = line1 };
