@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 
-namespace Commerce.Core.Common;
+namespace Commerce.Infrastructure.CQRS;
 
-public static class QueryExtension
+public static class QueryableExtension
 {
     public static IQueryable<TEntity> Filter<TEntity>(this IQueryable<TEntity> queryable, string attribute, object value)
     {
