@@ -67,7 +67,7 @@ public class DebitNoteTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var DebitNote = new DebitNote() { Reference = Guid.NewGuid().ToString() };
         DebitNote.EnterpriseId = 1;
@@ -104,7 +104,7 @@ public class DebitNoteTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var DebitNote = await context.DebitNotes.FindAsync(3);
         DebitNote!.Lines[0].Quantity = 2;
@@ -122,7 +122,7 @@ public class DebitNoteTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new DebitNoteCommand();
         command.Action = CommandAction.Delete;

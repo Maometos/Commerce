@@ -16,38 +16,26 @@ public class CQRSDispatcherTest
     }
 
     [Fact]
-    public async void TestDispatchingFindQuery()
-    {
-        var query = new EntityQuery() { Id = 1, Action = QueryAction.Find };
-        var entity = await dispatcher.DispatchAsync(query) as Entity;
-        Assert.NotNull(entity);
-        Assert.Equal(1, entity.Id);
-    }
-
-    [Fact]
-    public async void TestDispatchingListQuery()
-    {
-        var query = new EntityQuery() { Action = QueryAction.List };
-        var list = await dispatcher.DispatchAsync(query) as List<Entity>;
-        Assert.NotEmpty(list!);
-        Assert.Equal(2, list!.Count);
-    }
-
-    [Fact]
-    public async void TestDispatchingFailedQuery()
+    public async void DispatchFetchingQueryAsync()
     {
         var query = new EntityQuery();
-        var result = await dispatcher.DispatchAsync(query);
-        Assert.Null(result);
-
-        query.Id = 0;
-        query.Action = QueryAction.Find;
-        result = await dispatcher.DispatchAsync(query) as Entity;
-        Assert.Null(result);
+        query.Parameters["Id"] = 2;
+        var list = await dispatcher.DispatchAsync(query) as List<Entity>;
+        Assert.NotNull(list);
+        Assert.Equal(2, list[0].Id);
     }
 
     [Fact]
-    public async void TestDispatchingCreateCommand()
+    public async void DispatchFailedQueryAsync()
+    {
+        var query = new EntityQuery();
+        var list = await dispatcher.DispatchAsync(query) as List<Entity>;
+        Assert.NotNull(list);
+        Assert.Empty(list);
+    }
+
+    [Fact]
+    public async void DispatchCreateCommandAsync()
     {
         var command = new EntityCommand() { Action = CommandAction.Create };
         var result = await dispatcher.DispatchAsync(command);
@@ -56,7 +44,7 @@ public class CQRSDispatcherTest
     }
 
     [Fact]
-    public async void TestDispatchingUpdateCommand()
+    public async void DispatchUpdateCommandAsync()
     {
         var command = new EntityCommand() { Action = CommandAction.Update };
         var result = await dispatcher.DispatchAsync(command);
@@ -65,7 +53,7 @@ public class CQRSDispatcherTest
     }
 
     [Fact]
-    public async void TestDispatchingDeleteCommand()
+    public async void DispatchDeleteCommandAsync()
     {
         var command = new EntityCommand() { Action = CommandAction.Delete };
         var result = await dispatcher.DispatchAsync(command);
@@ -74,7 +62,7 @@ public class CQRSDispatcherTest
     }
 
     [Fact]
-    public async void TestDispatchingFailedCommand()
+    public async void DispatchFailedCommandAsync()
     {
         var command = new EntityCommand();
         var result = await dispatcher.DispatchAsync(command);
@@ -95,24 +83,25 @@ public class EntityQuery : Query
 
 public class EntityQueryHandler : QueryHandler<EntityQuery, Entity>
 {
-    protected override Task<Entity?> FindAsync(EntityQuery query, CancellationToken token)
+    protected override Task<List<Entity>> FetchAsync(EntityQuery query, CancellationToken token)
     {
-        if (query.Id <= 0)
-        {
-            return Task.FromResult<Entity?>(null);
-        }
-
-        var entity = new Entity() { Id = query.Id };
-        return Task.FromResult<Entity?>(entity);
-    }
-
-    protected override Task<List<Entity>> ListAsync(EntityQuery query, CancellationToken token)
-    {
-        var entity1 = new Entity() { Id = 1 };
-        var entity2 = new Entity() { Id = 2 };
         var list = new List<Entity>();
-        list.Add(entity1);
-        list.Add(entity2);
+
+        if (query.Parameters.ContainsKey("Id"))
+        {
+            switch ((int)query.Parameters["Id"])
+            {
+                case 1:
+                    list.Add(new Entity() { Id = 1 });
+                    break;
+                case 2:
+                    list.Add(new Entity() { Id = 2 });
+                    break;
+                case 3:
+                    list.Add(new Entity() { Id = 3 });
+                    break;
+            }
+        }
 
         return Task.FromResult(list);
     }

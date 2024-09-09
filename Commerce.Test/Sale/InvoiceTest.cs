@@ -67,7 +67,7 @@ public class InvoiceTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var invoice = new Invoice() { Reference = Guid.NewGuid().ToString() };
         invoice.EnterpriseId = 1;
@@ -112,7 +112,7 @@ public class InvoiceTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var invoice = await context.Invoices.FindAsync(3);
         invoice!.Lines[0].Quantity = 2;
@@ -130,7 +130,7 @@ public class InvoiceTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new InvoiceCommand();
         command.Action = CommandAction.Delete;

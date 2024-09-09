@@ -47,7 +47,7 @@ public class TaxTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var group = new TaxGroup() { Name = "Manitoba sales tax" };
         group.Taxes.Add(new Tax() { Name = "GST", Rate = 5 });
@@ -62,7 +62,7 @@ public class TaxTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var group = new TaxGroup() { Id = 4, Name = "Exempted sales tax" };
         var command = new TaxGroupCommand();
@@ -78,7 +78,7 @@ public class TaxTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new TaxGroupCommand();
         command.Action = CommandAction.Delete;
@@ -89,22 +89,9 @@ public class TaxTest
     }
 
     [Fact]
-    public async void TestFinding()
+    public async void FilterAsync()
     {
         var query = new TaxGroupQuery();
-        query.Action = QueryAction.Find;
-        query.Parameters["Id"] = 1;
-
-        var group = await dispatcher.DispatchAsync(query) as TaxGroup;
-        Assert.NotNull(group);
-        Assert.Equal("Ontario sales tax", group.Name);
-    }
-
-    [Fact]
-    public async void TestFiltering()
-    {
-        var query = new TaxGroupQuery();
-        query.Action = QueryAction.List;
         query.Parameters["Name"] = "Alberta sales tax";
 
         var list = await dispatcher.DispatchAsync(query) as List<TaxGroup>;
@@ -113,10 +100,9 @@ public class TaxTest
     }
 
     [Fact]
-    public async void TestSorting()
+    public async void SortAsync()
     {
         var query = new TaxGroupQuery();
-        query.Action = QueryAction.List;
         query.Sort = "Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<TaxGroup>;
@@ -131,22 +117,16 @@ public class TaxTest
         Assert.Equal("Ontario sales tax", group2.Name);
         Assert.Equal("Quebec sales Tax", group3.Name);
         Assert.Equal("Saskatchewan sales Tax", group4.Name);
-    }
 
-    [Fact]
-    public async void TestReverseSorting()
-    {
-        var query = new TaxGroupQuery();
-        query.Action = QueryAction.List;
+        // reverse order by name
         query.Sort = "-Name";
-
-        var list = await dispatcher.DispatchAsync(query) as List<TaxGroup>;
+        list = await dispatcher.DispatchAsync(query) as List<TaxGroup>;
         Assert.NotNull(list);
 
-        var group1 = list[0];
-        var group2 = list[1];
-        var group3 = list[2];
-        var group4 = list[3];
+        group1 = list[0];
+        group2 = list[1];
+        group3 = list[2];
+        group4 = list[3];
 
         Assert.Equal("Saskatchewan sales Tax", group1.Name);
         Assert.Equal("Quebec sales Tax", group2.Name);
@@ -155,10 +135,9 @@ public class TaxTest
     }
 
     [Fact]
-    public async void TestPaginating()
+    public async void PaginateAsync()
     {
         var query = new TaxGroupQuery();
-        query.Action = QueryAction.List;
         query.Offset = 2;
         query.Limit = 2;
 

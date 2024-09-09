@@ -17,7 +17,7 @@ public class EventDispatcherTest
     }
 
     [Fact]
-    public async void TestDispatchingRequest()
+    public async void DispatchRequestAsync()
     {
         var ping = new PingRequest();
         var pong = (Response?)await dispatcher.DispatchAsync(ping);
@@ -29,7 +29,7 @@ public class EventDispatcherTest
     }
 
     [Fact]
-    public async void TestDispatchingNotification()
+    public async void DispatchNotificationAsync()
     {
         var notification = new Subject();
         await dispatcher.DispatchAsync(notification);

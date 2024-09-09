@@ -38,7 +38,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Create;
@@ -49,7 +49,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Update;
@@ -63,7 +63,7 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new CategoryCommand();
         command.Action = CommandAction.Delete;
@@ -74,22 +74,9 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestFinding()
+    public async void FilterAsync()
     {
         var query = new CategoryQuery();
-        query.Action = QueryAction.Find;
-        query.Parameters["Id"] = 1;
-
-        var user = await dispatcher.DispatchAsync(query) as Category;
-        Assert.NotNull(user);
-        Assert.Equal("Shoes", user.Name);
-    }
-
-    [Fact]
-    public async void TestFiltering()
-    {
-        var query = new CategoryQuery();
-        query.Action = QueryAction.List;
         query.Parameters["Name"] = "Clothing";
 
         var list = await dispatcher.DispatchAsync(query) as List<Category>;
@@ -98,10 +85,9 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestSorting()
+    public async void SortAsync()
     {
         var query = new CategoryQuery();
-        query.Action = QueryAction.List;
         query.Sort = "Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Category>;
@@ -116,22 +102,16 @@ public class CategoryTest
         Assert.Equal("Shoes", category2.Name);
         Assert.Equal("Swimwear", category3.Name);
         Assert.Equal("Underwear", category4.Name);
-    }
 
-    [Fact]
-    public async void TestReverseSorting()
-    {
-        var query = new CategoryQuery();
-        query.Action = QueryAction.List;
+        // reverse order by name
         query.Sort = "-Name";
-
-        var list = await dispatcher.DispatchAsync(query) as List<Category>;
+        list = await dispatcher.DispatchAsync(query) as List<Category>;
         Assert.NotNull(list);
 
-        var category1 = list[0];
-        var category2 = list[1];
-        var category3 = list[2];
-        var category4 = list[3];
+        category1 = list[0];
+        category2 = list[1];
+        category3 = list[2];
+        category4 = list[3];
 
         Assert.Equal("Underwear", category1.Name);
         Assert.Equal("Swimwear", category2.Name);
@@ -140,10 +120,9 @@ public class CategoryTest
     }
 
     [Fact]
-    public async void TestPaginating()
+    public async void PaginateAsync()
     {
         var query = new CategoryQuery();
-        query.Action = QueryAction.List;
         query.Offset = 2;
         query.Limit = 2;
 

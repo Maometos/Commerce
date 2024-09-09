@@ -38,7 +38,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Create;
@@ -49,7 +49,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Update;
@@ -63,7 +63,7 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new BrandCommand();
         command.Action = CommandAction.Delete;
@@ -74,34 +74,27 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestFinding()
+    public async void FilterAsync()
     {
         var query = new BrandQuery();
-        query.Action = QueryAction.Find;
         query.Parameters["Id"] = 1;
 
-        var brand = await dispatcher.DispatchAsync(query) as Brand;
-        Assert.NotNull(brand);
-        Assert.Equal("Dior", brand.Name);
-    }
+        var list = await dispatcher.DispatchAsync(query) as List<Brand>;
+        Assert.NotNull(list);
+        Assert.Single(list);
 
-    [Fact]
-    public async void TestFiltering()
-    {
-        var query = new BrandQuery();
-        query.Action = QueryAction.List;
+        query = new BrandQuery();
         query.Parameters["Name"] = "Boss";
 
-        var list = await dispatcher.DispatchAsync(query) as List<Brand>;
+        list = await dispatcher.DispatchAsync(query) as List<Brand>;
         Assert.NotNull(list);
         Assert.Single(list);
     }
 
     [Fact]
-    public async void TestSorting()
+    public async void SortAsync()
     {
         var query = new BrandQuery();
-        query.Action = QueryAction.List;
         query.Sort = "Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Brand>;
@@ -116,22 +109,16 @@ public class BrandTest
         Assert.Equal("Dior", brand2.Name);
         Assert.Equal("Nike", brand3.Name);
         Assert.Equal("Zara", brand4.Name);
-    }
 
-    [Fact]
-    public async void TestReverseSorting()
-    {
-        var query = new BrandQuery();
-        query.Action = QueryAction.List;
+        // reverse order by name
         query.Sort = "-Name";
-
-        var list = await dispatcher.DispatchAsync(query) as List<Brand>;
+        list = await dispatcher.DispatchAsync(query) as List<Brand>;
         Assert.NotNull(list);
 
-        var brand1 = list[0];
-        var brand2 = list[1];
-        var brand3 = list[2];
-        var brand4 = list[3];
+        brand1 = list[0];
+        brand2 = list[1];
+        brand3 = list[2];
+        brand4 = list[3];
 
         Assert.Equal("Zara", brand1.Name);
         Assert.Equal("Nike", brand2.Name);
@@ -140,10 +127,9 @@ public class BrandTest
     }
 
     [Fact]
-    public async void TestPaginating()
+    public async void PaginateAsync()
     {
         var query = new BrandQuery();
-        query.Action = QueryAction.List;
         query.Offset = 2;
         query.Limit = 2;
 

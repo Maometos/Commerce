@@ -67,7 +67,7 @@ public class BillTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var bill = new Bill() { Reference = Guid.NewGuid().ToString() };
         bill.EnterpriseId = 1;
@@ -112,7 +112,7 @@ public class BillTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var bill = await context.Bills.FindAsync(3);
         bill!.Lines[0].Quantity = 2;
@@ -130,7 +130,7 @@ public class BillTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new BillCommand();
         command.Action = CommandAction.Delete;

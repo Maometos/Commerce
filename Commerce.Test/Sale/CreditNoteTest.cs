@@ -67,7 +67,7 @@ public class CreditNoteTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var creditNote = new CreditNote() { Reference = Guid.NewGuid().ToString() };
         creditNote.EnterpriseId = 1;
@@ -104,7 +104,7 @@ public class CreditNoteTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var creditNote = await context.CreditNotes.FindAsync(3);
         creditNote!.Lines[0].Quantity = 2;
@@ -122,7 +122,7 @@ public class CreditNoteTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new CreditNoteCommand();
         command.Action = CommandAction.Delete;

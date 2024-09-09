@@ -38,7 +38,7 @@ public class EnterpriseTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var command = new EnterpriseCommand();
         command.Action = CommandAction.Create;
@@ -49,7 +49,7 @@ public class EnterpriseTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var command = new EnterpriseCommand();
         command.Action = CommandAction.Update;
@@ -63,7 +63,7 @@ public class EnterpriseTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new EnterpriseCommand();
         command.Action = CommandAction.Delete;
@@ -74,22 +74,9 @@ public class EnterpriseTest
     }
 
     [Fact]
-    public async void TestFinding()
+    public async void FilterAsync()
     {
         var query = new EnterpriseQuery();
-        query.Action = QueryAction.Find;
-        query.Parameters["Id"] = 1;
-
-        var enterprise = await dispatcher.DispatchAsync(query) as Enterprise;
-        Assert.NotNull(enterprise);
-        Assert.Equal("Microsoft", enterprise.Name);
-    }
-
-    [Fact]
-    public async void TestFiltering()
-    {
-        var query = new EnterpriseQuery();
-        query.Action = QueryAction.List;
         query.Parameters["Name"] = "Canonical";
 
         var list = await dispatcher.DispatchAsync(query) as List<Enterprise>;
@@ -98,10 +85,9 @@ public class EnterpriseTest
     }
 
     [Fact]
-    public async void TestSorting()
+    public async void SortAsync()
     {
         var query = new EnterpriseQuery();
-        query.Action = QueryAction.List;
         query.Sort = "Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Enterprise>;
@@ -116,22 +102,16 @@ public class EnterpriseTest
         Assert.Equal("Canonical", enterprise2.Name);
         Assert.Equal("Microsoft", enterprise3.Name);
         Assert.Equal("Oracle", enterprise4.Name);
-    }
 
-    [Fact]
-    public async void TestReverseSorting()
-    {
-        var query = new EnterpriseQuery();
-        query.Action = QueryAction.List;
+        // reverse order by name
         query.Sort = "-Name";
-
-        var list = await dispatcher.DispatchAsync(query) as List<Enterprise>;
+        list = await dispatcher.DispatchAsync(query) as List<Enterprise>;
         Assert.NotNull(list);
 
-        var enterprise1 = list[0];
-        var enterprise2 = list[1];
-        var enterprise3 = list[2];
-        var enterprise4 = list[3];
+        enterprise1 = list[0];
+        enterprise2 = list[1];
+        enterprise3 = list[2];
+        enterprise4 = list[3];
 
         Assert.Equal("Oracle", enterprise1.Name);
         Assert.Equal("Microsoft", enterprise2.Name);
@@ -140,10 +120,9 @@ public class EnterpriseTest
     }
 
     [Fact]
-    public async void TestPaginating()
+    public async void PaginateAsync()
     {
         var query = new EnterpriseQuery();
-        query.Action = QueryAction.List;
         query.Offset = 2;
         query.Limit = 2;
 

@@ -38,7 +38,7 @@ public class ItemTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var command = new ItemCommand();
         command.Action = CommandAction.Create;
@@ -49,7 +49,7 @@ public class ItemTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var command = new ItemCommand();
         command.Action = CommandAction.Update;
@@ -64,7 +64,7 @@ public class ItemTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new ItemCommand();
         command.Action = CommandAction.Delete;
@@ -75,34 +75,27 @@ public class ItemTest
     }
 
     [Fact]
-    public async void TestFinding()
+    public async void FilterAsync()
     {
         var query = new ItemQuery();
-        query.Action = QueryAction.Find;
         query.Parameters["Id"] = 1;
 
-        var item = await dispatcher.DispatchAsync(query) as Item;
-        Assert.NotNull(item);
-        Assert.Equal("Shirt", item.Name);
-    }
+        var list = await dispatcher.DispatchAsync(query) as List<Item>;
+        Assert.NotNull(list);
+        Assert.Single(list);
 
-    [Fact]
-    public async void TestFiltering()
-    {
-        var query = new ItemQuery();
-        query.Action = QueryAction.List;
+        query = new ItemQuery();
         query.Parameters["Price"] = 50m;
 
-        var list = await dispatcher.DispatchAsync(query) as List<Item>;
+        list = await dispatcher.DispatchAsync(query) as List<Item>;
         Assert.NotNull(list);
         Assert.Equal(2, list.Count);
     }
 
     [Fact]
-    public async void TestSorting()
+    public async void SortAsync()
     {
         var query = new ItemQuery();
-        query.Action = QueryAction.List;
         query.Sort = "Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Item>;
@@ -117,22 +110,16 @@ public class ItemTest
         Assert.Equal("Shirt", item2.Name);
         Assert.Equal("Short", item3.Name);
         Assert.Equal("T-Shirt", item4.Name);
-    }
 
-    [Fact]
-    public async void TestReverseSorting()
-    {
-        var query = new ItemQuery();
-        query.Action = QueryAction.List;
+        // reverse order by name
         query.Sort = "-Name";
-
-        var list = await dispatcher.DispatchAsync(query) as List<Item>;
+        list = await dispatcher.DispatchAsync(query) as List<Item>;
         Assert.NotNull(list);
 
-        var item1 = list[0];
-        var item2 = list[1];
-        var item3 = list[2];
-        var item4 = list[3];
+        item1 = list[0];
+        item2 = list[1];
+        item3 = list[2];
+        item4 = list[3];
 
         Assert.Equal("T-Shirt", item1.Name);
         Assert.Equal("Short", item2.Name);
@@ -141,10 +128,9 @@ public class ItemTest
     }
 
     [Fact]
-    public async void TestPaginating()
+    public async void PaginateAsync()
     {
         var query = new ItemQuery();
-        query.Action = QueryAction.List;
         query.Offset = 2;
         query.Limit = 2;
 

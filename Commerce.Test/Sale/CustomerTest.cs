@@ -38,7 +38,7 @@ public class CustomerTest
     }
 
     [Fact]
-    public async void TestCreating()
+    public async void CreateAsync()
     {
         var command = new CustomerCommand();
         command.Action = CommandAction.Create;
@@ -49,7 +49,7 @@ public class CustomerTest
     }
 
     [Fact]
-    public async void TestUpdating()
+    public async void UpdateAsync()
     {
         var command = new CustomerCommand();
         command.Action = CommandAction.Update;
@@ -63,7 +63,7 @@ public class CustomerTest
     }
 
     [Fact]
-    public async void TestDeleting()
+    public async void DeleteAsync()
     {
         var command = new CustomerCommand();
         command.Action = CommandAction.Delete;
@@ -74,34 +74,27 @@ public class CustomerTest
     }
 
     [Fact]
-    public async void TestFinding()
+    public async void FilterAsync()
     {
         var query = new CustomerQuery();
-        query.Action = QueryAction.Find;
         query.Parameters["Id"] = 1;
 
-        var customer = await dispatcher.DispatchAsync(query) as Customer;
-        Assert.NotNull(customer);
-        Assert.Equal("John Doe", customer.Name);
-    }
+        var list = await dispatcher.DispatchAsync(query) as List<Customer>;
+        Assert.NotNull(list);
+        Assert.Single(list);
 
-    [Fact]
-    public async void TestFiltering()
-    {
-        var query = new CustomerQuery();
-        query.Action = QueryAction.List;
+        query = new CustomerQuery();
         query.Parameters["Country"] = "Canada";
 
-        var list = await dispatcher.DispatchAsync(query) as List<Customer>;
+        list = await dispatcher.DispatchAsync(query) as List<Customer>;
         Assert.NotNull(list);
         Assert.Equal(2, list.Count);
     }
 
     [Fact]
-    public async void TestSorting()
+    public async void SortAsync()
     {
         var query = new CustomerQuery();
-        query.Action = QueryAction.List;
         query.Sort = "Name";
 
         var list = await dispatcher.DispatchAsync(query) as List<Customer>;
@@ -116,22 +109,16 @@ public class CustomerTest
         Assert.Equal("Jane Smith", customer2.Name);
         Assert.Equal("John Doe", customer3.Name);
         Assert.Equal("John Smith", customer4.Name);
-    }
 
-    [Fact]
-    public async void TestReverseSorting()
-    {
-        var query = new CustomerQuery();
-        query.Action = QueryAction.List;
+        // reverse order by name
         query.Sort = "-Name";
-
-        var list = await dispatcher.DispatchAsync(query) as List<Customer>;
+        list = await dispatcher.DispatchAsync(query) as List<Customer>;
         Assert.NotNull(list);
 
-        var customer1 = list[0];
-        var customer2 = list[1];
-        var customer3 = list[2];
-        var customer4 = list[3];
+        customer1 = list[0];
+        customer2 = list[1];
+        customer3 = list[2];
+        customer4 = list[3];
 
         Assert.Equal("John Smith", customer1.Name);
         Assert.Equal("John Doe", customer2.Name);
@@ -140,10 +127,9 @@ public class CustomerTest
     }
 
     [Fact]
-    public async void TestPaginating()
+    public async void PaginateAsync()
     {
         var query = new CustomerQuery();
-        query.Action = QueryAction.List;
         query.Offset = 2;
         query.Limit = 2;
 
