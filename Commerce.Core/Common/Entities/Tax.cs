@@ -1,11 +1,10 @@
-﻿namespace Commerce.Core.Common.Entities;
+﻿using Commerce.Core.Common.Abstractions;
 
-public class Tax
+namespace Commerce.Core.Common.Entities;
+
+public class Tax : Entity
 {
-    public int Id { get; set; }
-    public int TaxId { get; set; }
-    public string Name { get; set; } = null!;
+    public int TaxGroupId { get; set; }
     public decimal Rate { get; set; }
-
     public TaxGroup Group { get; set; } = null!;
 }

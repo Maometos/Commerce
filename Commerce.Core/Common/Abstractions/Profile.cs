@@ -1,9 +1,7 @@
 ﻿namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Profile
+public abstract class Profile : Entity
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string? Address { get; set; }

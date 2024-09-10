@@ -1,11 +1,9 @@
-﻿namespace Commerce.Core.Inventory.Entities;
+﻿using Commerce.Core.Common.Abstractions;
 
-public class Category
+namespace Commerce.Core.Inventory.Entities;
+
+public class Category : Entity
 {
-    public int Id { get; set; }
     public int ParentId { get; set; }
-    public string Name { get; set; } = null!;
-    public string? Description { get; set; }
-
     public List<Item> Items { get; } = [];
 }

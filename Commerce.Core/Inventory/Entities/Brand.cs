@@ -1,9 +1,8 @@
-﻿namespace Commerce.Core.Inventory.Entities;
+﻿using Commerce.Core.Common.Abstractions;
 
-public class Brand
+namespace Commerce.Core.Inventory.Entities;
+
+public class Brand : Entity
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-
     public List<Item> Items { get; } = [];
 }

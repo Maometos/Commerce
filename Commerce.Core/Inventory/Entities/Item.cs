@@ -1,20 +1,18 @@
-﻿using Commerce.Core.Common.Entities;
+﻿using Commerce.Core.Common.Abstractions;
+using Commerce.Core.Common.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Commerce.Core.Inventory.Entities;
 
-public class Item
+public class Item : Entity
 {
-    public int Id { get; set; }
     public int BrandId { get; set; }
     public int CategoryId { get; set; }
     public int DiscountId { get; set; }
     public int SaleTaxId { get; set; }
     public int PurchaseTaxId { get; set; }
     public string Code { get; set; } = null!;
-    public string Name { get; set; } = null!;
     public string? Unit { get; set; }
-    public string? Description { get; set; }
     public decimal Price { get; set; }
     public decimal Cost { get; set; }
 
