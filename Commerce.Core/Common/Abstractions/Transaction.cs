@@ -4,7 +4,11 @@ public abstract class Transaction<TLine, TTax> : Document where TLine : LineItem
 {
     public List<TLine> Lines { get; set; } = new List<TLine>();
     public decimal Subtotal => Lines.Sum(line => line.Quantity * line.Price);
-    public decimal Total => Subtotal + Taxes.Values.Sum();
+    public decimal Total
+    {
+        get => Subtotal + Taxes.Values.Sum();
+        set => Total = value;
+    }
     public Dictionary<string, decimal> Taxes
     {
         get
