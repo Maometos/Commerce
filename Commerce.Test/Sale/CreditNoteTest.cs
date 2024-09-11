@@ -27,6 +27,7 @@ public class CreditNoteTest
         dispatcher = new EventDispatcher();
         dispatcher.AddService(context);
         dispatcher.AddHandler<CreditNoteCommandHandler>();
+        dispatcher.AddHandler<CreditNoteQueryHandler>();
 
         var enterprise = new Enterprise() { Id = 1, Name = "FashionShop" };
         var customer1 = new Customer() { Id = 1, Name = "John Doe" };
@@ -75,10 +76,10 @@ public class CreditNoteTest
 
         var line1 = new CreditLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 3 };
         var gstTax1 = new CreditLineTax() { Name = "GST", Rate = 5, Line = line1 };
-        var pstTax1 = new CreditLineTax() { Name = "PST", Rate = 6, Line = line1 };
+        var qstTax1 = new CreditLineTax() { Name = "QST", Rate = 9.975m, Line = line1 };
 
         line1.Taxes.Add(gstTax1);
-        line1.Taxes.Add(pstTax1);
+        line1.Taxes.Add(qstTax1);
 
         creditNote.Lines.Add(line1);
 
@@ -91,7 +92,7 @@ public class CreditNoteTest
 
         creditNote = await context.CreditNotes.FindAsync(5);
         Assert.NotNull(creditNote);
-        Assert.Equal(166.5m, creditNote.Total);
+        Assert.Equal(172.4625m, creditNote.Total);
 
         output.WriteLine($"Subtotal: {creditNote.Subtotal}");
 
@@ -129,6 +130,61 @@ public class CreditNoteTest
         command.Argument = 1;
 
         var result = await dispatcher.DispatchAsync(command);
-        Assert.Equal(3, 3);
+        Assert.Equal(3, result);
+    }
+
+    [Fact]
+    public async void FilterAsync()
+    {
+        var query = new CreditNoteQuery();
+        query.Parameters["Id"] = 1;
+        var list = await dispatcher.DispatchAsync(query) as List<CreditNote>;
+        Assert.NotNull(list);
+        Assert.Single(list);
+
+        query = new CreditNoteQuery();
+        query.Parameters["Date"] = DateTime.Now;
+        list = await dispatcher.DispatchAsync(query) as List<CreditNote>;
+        Assert.NotNull(list);
+        Assert.Equal(4, list.Count);
+    }
+
+    [Fact]
+    public async void SortAsync()
+    {
+        var query = new CreditNoteQuery();
+        query.Sort = "Total";
+
+        var list = await dispatcher.DispatchAsync(query) as List<CreditNote>;
+        Assert.NotNull(list);
+        Assert.Equal(30, list[0].Total);
+        Assert.Equal(160, list[1].Total);
+        Assert.Equal(170, list[2].Total);
+        Assert.Equal(200, list[3].Total);
+
+        // reverse order by name
+        query.Sort = "-Total";
+        list = await dispatcher.DispatchAsync(query) as List<CreditNote>;
+        Assert.NotNull(list);
+        Assert.Equal(200, list[0].Total);
+        Assert.Equal(170, list[1].Total);
+        Assert.Equal(160, list[2].Total);
+        Assert.Equal(30, list[3].Total);
+    }
+
+    [Fact]
+    public async void PaginateAsync()
+    {
+        var query = new CreditNoteQuery();
+        query.Offset = 2;
+        query.Limit = 2;
+
+        var list = await dispatcher.DispatchAsync(query) as List<CreditNote>;
+        Assert.NotNull(list);
+
+        var invoice1 = list[0];
+        var invoice2 = list[1];
+        Assert.Equal(3, invoice1.Id);
+        Assert.Equal(4, invoice2.Id);
     }
 }
