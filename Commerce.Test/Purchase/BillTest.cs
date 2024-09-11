@@ -3,6 +3,7 @@ using Commerce.Core.Common.Entities;
 using Commerce.Core.Purchase.Entities;
 using Commerce.Core.Purchase.Handlers;
 using Commerce.Core.Purchase.Requests;
+using Commerce.Core.Sale.Requests;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ public class BillTest
         dispatcher = new EventDispatcher();
         dispatcher.AddService(context);
         dispatcher.AddHandler<BillCommandHandler>();
+        dispatcher.AddHandler<BillQueryHandler>();
 
         var enterprise = new Enterprise() { Id = 1, Name = "FashionShop" };
         var supplier1 = new Supplier() { Id = 1, Name = "John Doe" };
@@ -75,14 +77,14 @@ public class BillTest
 
         var line1 = new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 40, Quantity = 3 };
         var gstTax1 = new BillLineTax() { Name = "GST", Rate = 5, Line = line1 };
-        var pstTax1 = new BillLineTax() { Name = "PST", Rate = 6, Line = line1 };
+        var pstTax1 = new BillLineTax() { Name = "QST", Rate = 9.975m, Line = line1 };
 
         line1.Taxes.Add(gstTax1);
         line1.Taxes.Add(pstTax1);
 
         var line2 = new BillLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 60, Quantity = 2 };
         var gstTax2 = new BillLineTax() { Name = "GST", Rate = 5, Line = line2 };
-        var pstTax2 = new BillLineTax() { Name = "PST", Rate = 6, Line = line2 };
+        var pstTax2 = new BillLineTax() { Name = "QST", Rate = 9.975m, Line = line2 };
 
         line2.Taxes.Add(gstTax2);
         line2.Taxes.Add(pstTax2);
@@ -99,7 +101,7 @@ public class BillTest
 
         bill = await context.Bills.FindAsync(5);
         Assert.NotNull(bill);
-        Assert.Equal(266.4m, bill.Total);
+        Assert.Equal(275.940m, bill.Total);
 
         output.WriteLine($"Subtotal: {bill.Subtotal}");
 
@@ -138,5 +140,60 @@ public class BillTest
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(3, 3);
+    }
+
+    [Fact]
+    public async void FilterAsync()
+    {
+        var query = new BillQuery();
+        query.Parameters["Id"] = 1;
+        var list = await dispatcher.DispatchAsync(query) as List<Bill>;
+        Assert.NotNull(list);
+        Assert.Single(list);
+
+        query = new BillQuery();
+        query.Parameters["Date"] = DateTime.Now;
+        list = await dispatcher.DispatchAsync(query) as List<Bill>;
+        Assert.NotNull(list);
+        Assert.Equal(4, list.Count);
+    }
+
+    [Fact]
+    public async void SortAsync()
+    {
+        var query = new BillQuery();
+        query.Sort = "Total";
+
+        var list = await dispatcher.DispatchAsync(query) as List<Bill>;
+        Assert.NotNull(list);
+        Assert.Equal(30, list[0].Total);
+        Assert.Equal(160, list[1].Total);
+        Assert.Equal(170, list[2].Total);
+        Assert.Equal(200, list[3].Total);
+
+        // reverse order by name
+        query.Sort = "-Total";
+        list = await dispatcher.DispatchAsync(query) as List<Bill>;
+        Assert.NotNull(list);
+        Assert.Equal(200, list[0].Total);
+        Assert.Equal(170, list[1].Total);
+        Assert.Equal(160, list[2].Total);
+        Assert.Equal(30, list[3].Total);
+    }
+
+    [Fact]
+    public async void PaginateAsync()
+    {
+        var query = new BillQuery();
+        query.Offset = 2;
+        query.Limit = 2;
+
+        var list = await dispatcher.DispatchAsync(query) as List<Bill>;
+        Assert.NotNull(list);
+
+        var invoice1 = list[0];
+        var invoice2 = list[1];
+        Assert.Equal(3, invoice1.Id);
+        Assert.Equal(4, invoice2.Id);
     }
 }
