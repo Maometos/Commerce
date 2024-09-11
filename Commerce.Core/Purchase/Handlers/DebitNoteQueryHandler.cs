@@ -1,23 +1,23 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Values;
-using Commerce.Core.Sale.Entities;
+using Commerce.Core.Purchase.Entities;
 using Commerce.Core.Sale.Requests;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Sale.Handlers;
+namespace Commerce.Core.Purchase.Handlers;
 
-public class CreditNoteQueryHandler : QueryHandler<CreditNoteQuery, CreditNote>
+public class DebitNoteQueryHandler : QueryHandler<DebitNoteQuery, DebitNote>
 {
     private DataContext context;
 
-    public CreditNoteQueryHandler(DataContext context)
+    public DebitNoteQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<CreditNote>> FetchAsync(CreditNoteQuery query, CancellationToken token)
+    protected override async Task<List<DebitNote>> FetchAsync(DebitNoteQuery query, CancellationToken token)
     {
-        var queryable = context.CreditNotes.AsQueryable();
+        var queryable = context.DebitNotes.AsQueryable();
 
         if (query.Parameters.ContainsKey("Id"))
         {

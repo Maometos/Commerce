@@ -3,6 +3,7 @@ using Commerce.Core.Common.Entities;
 using Commerce.Core.Purchase.Entities;
 using Commerce.Core.Purchase.Handlers;
 using Commerce.Core.Purchase.Requests;
+using Commerce.Core.Sale.Requests;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ public class DebitNoteTest
         dispatcher = new EventDispatcher();
         dispatcher.AddService(context);
         dispatcher.AddHandler<DebitNoteCommandHandler>();
+        dispatcher.AddHandler<DebitNoteQueryHandler>();
 
         var enterprise = new Enterprise() { Id = 1, Name = "FashionShop" };
         var supplier1 = new Supplier() { Id = 1, Name = "John Doe" };
@@ -75,10 +77,10 @@ public class DebitNoteTest
 
         var line1 = new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 40, Quantity = 3 };
         var gstTax1 = new DebitLineTax() { Name = "GST", Rate = 5, Line = line1 };
-        var pstTax1 = new DebitLineTax() { Name = "PST", Rate = 6, Line = line1 };
+        var qstTax1 = new DebitLineTax() { Name = "QST", Rate = 9.975m, Line = line1 };
 
         line1.Taxes.Add(gstTax1);
-        line1.Taxes.Add(pstTax1);
+        line1.Taxes.Add(qstTax1);
 
         DebitNote.Lines.Add(line1);
 
@@ -91,7 +93,7 @@ public class DebitNoteTest
 
         DebitNote = await context.DebitNotes.FindAsync(5);
         Assert.NotNull(DebitNote);
-        Assert.Equal(133.2m, DebitNote.Total);
+        Assert.Equal(137.970m, DebitNote.Total);
 
         output.WriteLine($"Subtotal: {DebitNote.Subtotal}");
 
@@ -130,5 +132,60 @@ public class DebitNoteTest
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(3, 3);
+    }
+
+    [Fact]
+    public async void FilterAsync()
+    {
+        var query = new DebitNoteQuery();
+        query.Parameters["Id"] = 1;
+        var list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        Assert.NotNull(list);
+        Assert.Single(list);
+
+        query = new DebitNoteQuery();
+        query.Parameters["Date"] = DateTime.Now;
+        list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        Assert.NotNull(list);
+        Assert.Equal(4, list.Count);
+    }
+
+    [Fact]
+    public async void SortAsync()
+    {
+        var query = new DebitNoteQuery();
+        query.Sort = "Total";
+
+        var list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        Assert.NotNull(list);
+        Assert.Equal(30, list[0].Total);
+        Assert.Equal(160, list[1].Total);
+        Assert.Equal(170, list[2].Total);
+        Assert.Equal(200, list[3].Total);
+
+        // reverse order by name
+        query.Sort = "-Total";
+        list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        Assert.NotNull(list);
+        Assert.Equal(200, list[0].Total);
+        Assert.Equal(170, list[1].Total);
+        Assert.Equal(160, list[2].Total);
+        Assert.Equal(30, list[3].Total);
+    }
+
+    [Fact]
+    public async void PaginateAsync()
+    {
+        var query = new DebitNoteQuery();
+        query.Offset = 2;
+        query.Limit = 2;
+
+        var list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        Assert.NotNull(list);
+
+        var invoice1 = list[0];
+        var invoice2 = list[1];
+        Assert.Equal(3, invoice1.Id);
+        Assert.Equal(4, invoice2.Id);
     }
 }

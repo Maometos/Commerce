@@ -21,28 +21,28 @@ public class InvoiceQueryHandler : QueryHandler<InvoiceQuery, Invoice>
 
         if (query.Parameters.ContainsKey("Id"))
         {
-            queryable = queryable.Where(invoice => invoice.Id == (int)query.Parameters["Id"]);
+            queryable = queryable.Where(e => e.Id == (int)query.Parameters["Id"]);
         }
 
         if (query.Parameters.ContainsKey("Reference"))
         {
-            queryable = queryable.Where(invoice => invoice.Reference == (string)query.Parameters["Reference"]);
+            queryable = queryable.Where(e => e.Reference == (string)query.Parameters["Reference"]);
         }
 
         if (query.Parameters.ContainsKey("Total"))
         {
-            queryable = queryable.Where(invoice => invoice.Total == (decimal)query.Parameters["Total"]);
+            queryable = queryable.Where(e => e.Total == (decimal)query.Parameters["Total"]);
         }
 
         if (query.Parameters.ContainsKey("Date"))
         {
             var date = (DateTime)query.Parameters["Date"];
-            queryable = queryable.Where(invoice => invoice.Date.ToString("d") == date.ToString("d"));
+            queryable = queryable.Where(e => e.Date.ToString("d") == date.ToString("d"));
         }
 
         if (query.Parameters.ContainsKey("Status"))
         {
-            queryable = queryable.Where(invoice => invoice.Status == (StatementStatus)query.Parameters["Status"]);
+            queryable = queryable.Where(e => e.Status == (StatementStatus)query.Parameters["Status"]);
         }
 
         return await ListAsync(queryable, query, token);
