@@ -29,7 +29,7 @@ public class DataContext : DbContext
     public DbSet<Bill> Bills { get; set; }
     public DbSet<BillLine> BillLines { get; set; }
     public DbSet<BillLineTax> BillLineTaxes { get; set; }
-    public DbSet<PurchasePayment> PurchasePayments { get; set; }
+    public DbSet<PaymentAdvice> PaymentAdvices { get; set; }
     public DbSet<DebitNote> DebitNotes { get; set; }
     public DbSet<DebitLine> DebitLines { get; set; }
     public DbSet<DebitLineTax> DebitLineTaxes { get; set; }

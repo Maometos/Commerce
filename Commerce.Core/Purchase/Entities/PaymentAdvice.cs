@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class PurchasePayment : Payment
+public class PaymentAdvice : Payment
 {
     public int BillId { get; set; }
 
