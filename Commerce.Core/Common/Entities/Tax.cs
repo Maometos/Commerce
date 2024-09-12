@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Entities;
 
-public class Tax : Entity
+public class Tax : Profile
 {
     public int TaxGroupId { get; set; }
     public decimal Rate { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Entities;
 
-public class TaxGroup : Entity
+public class TaxGroup : Profile
 {
     public List<Tax> Taxes { get; } = [];
 }

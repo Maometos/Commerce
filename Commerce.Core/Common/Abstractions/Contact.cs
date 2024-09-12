@@ -1,6 +1,6 @@
 ﻿namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Contact : Entity
+public abstract class Contact : Profile
 {
     public string? Email { get; set; }
     public string? Phone { get; set; }
