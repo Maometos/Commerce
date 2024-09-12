@@ -20,7 +20,7 @@ public class CQRSDispatcherTest
     {
         var query = new EntityQuery();
         query.Parameters["Id"] = 2;
-        var list = await dispatcher.DispatchAsync(query) as List<Entity>;
+        var list = await dispatcher.DispatchAsync(query) as List<CustomEntity>;
         Assert.NotNull(list);
         Assert.Equal(2, list[0].Id);
     }
@@ -29,7 +29,7 @@ public class CQRSDispatcherTest
     public async void DispatchFailedQueryAsync()
     {
         var query = new EntityQuery();
-        var list = await dispatcher.DispatchAsync(query) as List<Entity>;
+        var list = await dispatcher.DispatchAsync(query) as List<CustomEntity>;
         Assert.NotNull(list);
         Assert.Empty(list);
     }
@@ -71,9 +71,8 @@ public class CQRSDispatcherTest
     }
 }
 
-public class Entity
+public class CustomEntity : Entity
 {
-    public int Id { get; set; } = 0;
 }
 
 public class EntityQuery : Query
@@ -81,24 +80,24 @@ public class EntityQuery : Query
     public int Id { get; set; } = 1;
 }
 
-public class EntityQueryHandler : QueryHandler<EntityQuery, Entity>
+public class EntityQueryHandler : QueryHandler<EntityQuery, CustomEntity>
 {
-    protected override Task<List<Entity>> FetchAsync(EntityQuery query, CancellationToken token)
+    protected override Task<List<CustomEntity>> FetchAsync(EntityQuery query, CancellationToken token)
     {
-        var list = new List<Entity>();
+        var list = new List<CustomEntity>();
 
         if (query.Parameters.ContainsKey("Id"))
         {
             switch ((int)query.Parameters["Id"])
             {
                 case 1:
-                    list.Add(new Entity() { Id = 1 });
+                    list.Add(new CustomEntity() { Id = 1 });
                     break;
                 case 2:
-                    list.Add(new Entity() { Id = 2 });
+                    list.Add(new CustomEntity() { Id = 2 });
                     break;
                 case 3:
-                    list.Add(new Entity() { Id = 3 });
+                    list.Add(new CustomEntity() { Id = 3 });
                     break;
             }
         }

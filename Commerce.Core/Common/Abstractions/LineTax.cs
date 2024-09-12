@@ -1,8 +1,9 @@
-﻿namespace Commerce.Core.Common.Abstractions;
+﻿using Commerce.Infrastructure.CQRS;
 
-public abstract class LineTax
+namespace Commerce.Core.Common.Abstractions;
+
+public abstract class LineTax : Entity
 {
-    public int Id { get; set; }
     public string Name { get; set; } = null!;
     public decimal Rate { get; set; }
 }

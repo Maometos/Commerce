@@ -1,8 +1,9 @@
-﻿namespace Commerce.Core.Common.Entities;
+﻿using Commerce.Infrastructure.CQRS;
 
-public class Location
+namespace Commerce.Core.Common.Entities;
+
+public class Location : Entity
 {
-    public int Id { get; set; }
     public string Address { get; set; } = null!;
     public string Locality { get; set; } = null!;
     public string Territory { get; set; } = null!;

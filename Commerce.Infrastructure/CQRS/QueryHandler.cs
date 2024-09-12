@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Infrastructure.CQRS;
 
-public abstract class QueryHandler<TQuery, TEntity> : RequestHandler<TQuery, object?> where TQuery : Query
+public abstract class QueryHandler<TQuery, TEntity> : RequestHandler<TQuery, object?> where TQuery : Query where TEntity : Entity
 {
     protected abstract Task<List<TEntity>> FetchAsync(TQuery query, CancellationToken token);
     protected Task<List<TEntity>> ListAsync(IQueryable<TEntity> queryable, TQuery query, CancellationToken token)
