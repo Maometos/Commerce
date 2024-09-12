@@ -7,5 +7,5 @@ public class Invoice : Statement<InvoiceLine, InvoiceLineTax>
     public int CustomerId { get; set; }
 
     public Customer Customer { get; set; } = null!;
-    public List<SalePayment> Payments { get; } = [];
+    public List<PaymentReceipt> Payments { get; } = [];
 }

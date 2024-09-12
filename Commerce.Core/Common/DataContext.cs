@@ -20,7 +20,7 @@ public class DataContext : DbContext
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<InvoiceLine> InvoiceLines { get; set; }
     public DbSet<InvoiceLineTax> InvoiceLineTaxes { get; set; }
-    public DbSet<SalePayment> SalePayments { get; set; }
+    public DbSet<PaymentReceipt> PaymentReceipts { get; set; }
     public DbSet<CreditNote> CreditNotes { get; set; }
     public DbSet<CreditLine> CreditLines { get; set; }
     public DbSet<CreditLineTax> CreditLineTaxes { get; set; }
