@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Sale.Entities;
 
-public class Customer : Profile
+public class Customer : Contact
 {
 }

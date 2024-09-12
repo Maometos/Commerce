@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class Supplier : Profile
+public class Supplier : Contact
 {
 }

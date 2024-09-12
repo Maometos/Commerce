@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Common.Entities;
 
-public class Enterprise : Profile
+public class Enterprise : Contact
 {
 }
