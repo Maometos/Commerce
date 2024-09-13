@@ -4,5 +4,5 @@ namespace Commerce.Core.Common.Entities;
 
 public class TaxGroup : Profile
 {
-    public List<Tax> Taxes { get; } = [];
+    public List<TaxRate> Rates { get; } = [];
 }

@@ -22,6 +22,7 @@ public class Item : Profile
 
     [ForeignKey(nameof(SaleTaxId))]
     public TaxGroup? SateTax { get; set; }
+
     [ForeignKey(nameof(PurchaseTaxId))]
     public TaxGroup? PurchaseTax { get; set; }
 }

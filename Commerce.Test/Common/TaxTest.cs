@@ -26,18 +26,18 @@ public class TaxTest
         dispatcher.AddHandler<TaxQueryHandler>();
 
         var group1 = new TaxGroup() { Name = "Ontario sales tax" };
-        group1.Taxes.Add(new Tax() { Name = "HST", Rate = 13 });
+        group1.Rates.Add(new TaxRate() { Name = "HST", Percent = 13 });
 
         var group2 = new TaxGroup() { Name = "Alberta sales tax" };
-        group2.Taxes.Add(new Tax() { Name = "GST", Rate = 5 });
+        group2.Rates.Add(new TaxRate() { Name = "GST", Percent = 5 });
 
         var group3 = new TaxGroup() { Name = "Saskatchewan sales Tax" };
-        group3.Taxes.Add(new Tax() { Name = "GST", Rate = 5 });
-        group3.Taxes.Add(new Tax() { Name = "PST", Rate = 6 });
+        group3.Rates.Add(new TaxRate() { Name = "GST", Percent = 5 });
+        group3.Rates.Add(new TaxRate() { Name = "PST", Percent = 6 });
 
         var group4 = new TaxGroup() { Name = "Quebec sales Tax" };
-        group4.Taxes.Add(new Tax() { Name = "GST", Rate = 5 });
-        group4.Taxes.Add(new Tax() { Name = "QST", Rate = 9.975m });
+        group4.Rates.Add(new TaxRate() { Name = "GST", Percent = 5 });
+        group4.Rates.Add(new TaxRate() { Name = "QST", Percent = 9.975m });
 
         context.TaxGroups.Add(group1);
         context.TaxGroups.Add(group2);
@@ -50,8 +50,8 @@ public class TaxTest
     public async void CreateAsync()
     {
         var group = new TaxGroup() { Name = "Manitoba sales tax" };
-        group.Taxes.Add(new Tax() { Name = "GST", Rate = 5 });
-        group.Taxes.Add(new Tax() { Name = "RST", Rate = 7 });
+        group.Rates.Add(new TaxRate() { Name = "GST", Percent = 5 });
+        group.Rates.Add(new TaxRate() { Name = "RST", Percent = 7 });
 
         var command = new TaxGroupCommand();
         command.Action = CommandAction.Create;
@@ -74,7 +74,7 @@ public class TaxTest
 
         group = await context.TaxGroups.FindAsync(4);
         Assert.Equal("Exempted sales tax", group!.Name);
-        Assert.Empty(group.Taxes);
+        Assert.Empty(group.Rates);
     }
 
     [Fact]

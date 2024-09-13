@@ -2,10 +2,10 @@
 
 namespace Commerce.Core.Common.Entities;
 
-public class Tax : Entity
+public class TaxRate : Entity
 {
     public int TaxGroupId { get; set; }
     public string Name { get; set; } = null!;
-    public decimal Rate { get; set; }
+    public decimal Percent { get; set; }
     public TaxGroup Group { get; set; } = null!;
 }
