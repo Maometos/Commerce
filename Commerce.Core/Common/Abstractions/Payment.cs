@@ -6,5 +6,5 @@ public abstract class Payment : Document
 {
     public decimal InvoiceAmount { get; set; }
     public decimal PaymentAmount { get; set; }
-    public PaymentMethod PaymentMethod { get; set; }
+    public PaymentMode PaymentMode { get; set; } = PaymentMode.Cash;
 }

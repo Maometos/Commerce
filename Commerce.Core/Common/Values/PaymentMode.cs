@@ -1,6 +1,6 @@
 ﻿namespace Commerce.Core.Common.Values;
 
-public enum PaymentMethod
+public enum PaymentMode
 {
     Cash,
     Check,
