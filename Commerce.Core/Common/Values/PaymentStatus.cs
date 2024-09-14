@@ -1,9 +1,7 @@
 ﻿namespace Commerce.Core.Common.Values;
 
-public enum StatementStatus
+public enum PaymentStatus
 {
-    Draft,
-    Cancelled,
     Unpaid,
     PartPaid,
     Paid

@@ -42,7 +42,7 @@ public class InvoiceQueryHandler : QueryHandler<InvoiceQuery, Invoice>
 
         if (query.Parameters.ContainsKey("Status"))
         {
-            queryable = queryable.Where(e => e.Status == (StatementStatus)query.Parameters["Status"]);
+            queryable = queryable.Where(e => e.PaymentStatus == (PaymentStatus)query.Parameters["Status"]);
         }
 
         return await ListAsync(queryable, query, token);
