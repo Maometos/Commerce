@@ -2,7 +2,7 @@
 
 public abstract class Transaction<TLine, TTax> : Document where TLine : LineItem<TTax> where TTax : LineTax
 {
-    public List<TLine> Lines { get; set; } = new List<TLine>();
+    public List<TLine> Lines { get; } = [];
     public decimal Subtotal => Lines.Sum(line => line.Quantity * line.Price);
     public decimal Total
     {
