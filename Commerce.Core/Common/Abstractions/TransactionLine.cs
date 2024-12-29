@@ -3,7 +3,7 @@ using Commerce.Infrastructure.CQRS;
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class LineItem<TTax> : Entity where TTax : LineTax
+public abstract class TransactionLine<TTax> : Entity where TTax : LineTax
 {
     public int ItemId { get; set; }
     public string? Code { get; set; }

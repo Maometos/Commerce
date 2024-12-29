@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Invoice<TLine, TTax, TPayment> : TransactionAggregate<TLine, TTax> where TLine : LineItem<TTax> where TTax : LineTax where TPayment : Payment
+public abstract class Invoice<TLine, TTax, TPayment> : TransactionAggregate<TLine, TTax> where TLine : TransactionLine<TTax> where TTax : LineTax where TPayment : Payment
 {
     public List<TPayment> Payments { get; } = [];
 
