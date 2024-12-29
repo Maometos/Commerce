@@ -1,6 +1,6 @@
 ﻿namespace Commerce.Core.Common.Abstractions;
 
-public abstract class TransactionAggregate<TLine, TTax> : Document where TLine : TransactionLine<TTax> where TTax : TransactionLineTax
+public abstract class TransactionAggregate<TLine, TTax> : TransactionDocument where TLine : TransactionLine<TTax> where TTax : TransactionLineTax
 {
     public List<TLine> Lines { get; } = [];
     public decimal Subtotal => Lines.Sum(line => line.Quantity * line.Price);

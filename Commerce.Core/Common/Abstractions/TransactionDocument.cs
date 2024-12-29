@@ -4,7 +4,7 @@ using Commerce.Infrastructure.CQRS;
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class Document : Entity
+public abstract class TransactionDocument : Entity
 {
     public int EnterpriseId { get; set; }
     public string Reference { get; set; } = null!;
