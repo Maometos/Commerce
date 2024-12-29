@@ -6,18 +6,18 @@ using Commerce.Infrastructure.CQRS;
 
 namespace Commerce.Core.Purchase.Handlers;
 
-public class BillQueryHandler : QueryHandler<BillQuery, Bill>
+public class PurchaseQueryHandler : QueryHandler<PurchaseInvoiceQuery, PurchaseInvoice>
 {
     private DataContext context;
 
-    public BillQueryHandler(DataContext context)
+    public PurchaseQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<Bill>> FetchAsync(BillQuery query, CancellationToken token)
+    protected override async Task<List<PurchaseInvoice>> FetchAsync(PurchaseInvoiceQuery query, CancellationToken token)
     {
-        var queryable = context.Bills.AsQueryable();
+        var queryable = context.PurchaseInvoices.AsQueryable();
 
         if (query.Parameters.ContainsKey("Id"))
         {

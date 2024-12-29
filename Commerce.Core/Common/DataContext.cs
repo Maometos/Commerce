@@ -26,9 +26,9 @@ public class DataContext : DbContext
     public DbSet<CreditLineTax> CreditLineTaxes { get; set; }
     public DbSet<SaleRefund> SaleRefunds { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
-    public DbSet<Bill> Bills { get; set; }
-    public DbSet<BillLine> BillLines { get; set; }
-    public DbSet<BillLineTax> BillLineTaxes { get; set; }
+    public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
+    public DbSet<PurchaseInvoiceLine> PurchaseInvoiceLines { get; set; }
+    public DbSet<PurchaseInvoiceLineTax> PurchaseInvoiceLineTaxes { get; set; }
     public DbSet<PaymentAdvice> PaymentAdvices { get; set; }
     public DbSet<DebitNote> DebitNotes { get; set; }
     public DbSet<DebitLine> DebitLines { get; set; }

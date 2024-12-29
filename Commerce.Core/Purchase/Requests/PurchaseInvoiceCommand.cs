@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Purchase.Requests;
 
-public class BillCommand : Command
+public class PurchaseInvoiceCommand : Command
 {
 }
