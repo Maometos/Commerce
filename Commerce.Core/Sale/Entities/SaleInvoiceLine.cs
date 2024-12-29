@@ -2,9 +2,8 @@
 
 namespace Commerce.Core.Sale.Entities;
 
-public class PaymentReceipt : Payment
+public class SaleInvoiceLine : LineItem<SaleInvoiceLineTax>
 {
     public int SaleInvoiceId { get; set; }
-
     public SaleInvoice Invoice { get; set; } = null!;
 }

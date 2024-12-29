@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Sale.Requests;
 
-public class InvoiceCommand : Command
+public class SaleInvoiceQuery : Query
 {
 }
