@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class PurchaseInvoiceLineTax : LineTax
+public class PurchaseInvoiceLineTax : TransactionLineTax
 {
     public int PurchaseInvoiceLineId { get; set; }
 

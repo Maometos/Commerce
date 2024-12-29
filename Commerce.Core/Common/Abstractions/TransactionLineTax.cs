@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Common.Abstractions;
 
-public abstract class LineTax : Entity
+public abstract class TransactionLineTax : Entity
 {
     public string Name { get; set; } = null!;
     public decimal Rate { get; set; }
