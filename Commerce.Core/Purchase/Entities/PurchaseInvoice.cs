@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class PurchaseInvoice : Statement<PurchaseInvoiceLine, PurchaseInvoiceLineTax, PaymentAdvice>
+public class PurchaseInvoice : Invoice<PurchaseInvoiceLine, PurchaseInvoiceLineTax, PaymentAdvice>
 {
     public int SupplierId { get; set; }
     public Supplier Supplier { get; set; } = null!;

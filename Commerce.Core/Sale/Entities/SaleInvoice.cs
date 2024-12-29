@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Sale.Entities;
 
-public class SaleInvoice : Statement<SaleInvoiceLine, SaleInvoiceLineTax, PaymentReceipt>
+public class SaleInvoice : Invoice<SaleInvoiceLine, SaleInvoiceLineTax, PaymentReceipt>
 {
     public int CustomerId { get; set; }
     public Customer Customer { get; set; } = null!;
