@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Sale.Entities;
 
-public class SaleRefund : Payment
+public class RefundAdvice : Payment
 {
     public int CreditNoteId { get; set; }
 
