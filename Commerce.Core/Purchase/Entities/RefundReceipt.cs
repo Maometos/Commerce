@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class PurchaseRefund : Payment
+public class RefundReceipt : Payment
 {
     public int DebitNoteId { get; set; }
 

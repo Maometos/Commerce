@@ -7,5 +7,5 @@ public class DebitNote : Adjustment<DebitLine, DebitLineTax>
     public int SupplierId { get; set; }
 
     public Supplier Supplier { get; set; } = null!;
-    public List<PurchaseRefund> Refunds { get; } = [];
+    public List<RefundReceipt> Refunds { get; } = [];
 }
