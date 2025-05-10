@@ -4,7 +4,7 @@ namespace Commerce.Core.Sale.Entities;
 
 public class RefundAdvice : Payment
 {
-    public int CreditNoteId { get; set; }
+    public int CreditMemoId { get; set; }
 
-    public CreditNote Note { get; set; } = null!;
+    public CreditMemo Memo { get; set; } = null!;
 }

@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Sale.Requests;
 
-public class CreditNoteCommand : Command
+public class CreditMemoCommand : Command
 {
 }

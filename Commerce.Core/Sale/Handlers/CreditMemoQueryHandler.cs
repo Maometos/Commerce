@@ -6,18 +6,18 @@ using Commerce.Infrastructure.CQRS;
 
 namespace Commerce.Core.Sale.Handlers;
 
-public class CreditNoteQueryHandler : QueryHandler<CreditNoteQuery, CreditNote>
+public class CreditMemoQueryHandler : QueryHandler<CreditMemoQuery, CreditMemo>
 {
     private DataContext context;
 
-    public CreditNoteQueryHandler(DataContext context)
+    public CreditMemoQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<CreditNote>> FetchAsync(CreditNoteQuery query, CancellationToken token)
+    protected override async Task<List<CreditMemo>> FetchAsync(CreditMemoQuery query, CancellationToken token)
     {
-        var queryable = context.CreditNotes.AsQueryable();
+        var queryable = context.CreditMemos.AsQueryable();
 
         if (query.Parameters.ContainsKey("Id"))
         {

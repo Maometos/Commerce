@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Sale.Requests;
 
-public class CreditNoteQuery : Query
+public class CreditMemoQuery : Query
 {
 }

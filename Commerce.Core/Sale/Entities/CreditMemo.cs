@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Sale.Entities;
 
-public class CreditNote : Memo<CreditLine, CreditLineTax>
+public class CreditMemo : Memo<CreditLine, CreditLineTax>
 {
     public int CustomerId { get; set; }
 
