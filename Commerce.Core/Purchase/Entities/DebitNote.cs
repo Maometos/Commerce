@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Purchase.Entities;
 
-public class DebitNote : Adjustment<DebitLine, DebitLineTax>
+public class DebitNote : Memo<DebitLine, DebitLineTax>
 {
     public int SupplierId { get; set; }
 
