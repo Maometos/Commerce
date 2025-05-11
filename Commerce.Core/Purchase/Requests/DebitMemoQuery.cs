@@ -2,6 +2,6 @@
 
 namespace Commerce.Core.Sale.Requests;
 
-public class DebitNoteQuery : Query
+public class DebitMemoQuery : Query
 {
 }

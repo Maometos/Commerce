@@ -6,18 +6,18 @@ using Commerce.Infrastructure.CQRS;
 
 namespace Commerce.Core.Purchase.Handlers;
 
-public class DebitNoteQueryHandler : QueryHandler<DebitNoteQuery, DebitNote>
+public class DebitMemoQueryHandler : QueryHandler<DebitMemoQuery, DebitMemo>
 {
     private DataContext context;
 
-    public DebitNoteQueryHandler(DataContext context)
+    public DebitMemoQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<DebitNote>> FetchAsync(DebitNoteQuery query, CancellationToken token)
+    protected override async Task<List<DebitMemo>> FetchAsync(DebitMemoQuery query, CancellationToken token)
     {
-        var queryable = context.DebitNotes.AsQueryable();
+        var queryable = context.DebitMemos.AsQueryable();
 
         if (query.Parameters.ContainsKey("Id"))
         {

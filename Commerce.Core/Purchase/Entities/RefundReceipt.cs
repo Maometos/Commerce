@@ -4,7 +4,7 @@ namespace Commerce.Core.Purchase.Entities;
 
 public class RefundReceipt : Payment
 {
-    public int DebitNoteId { get; set; }
+    public int DebitMemoId { get; set; }
 
-    public DebitNote Note { get; set; } = null!;
+    public DebitMemo Memo { get; set; } = null!;
 }

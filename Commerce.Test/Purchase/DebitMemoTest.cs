@@ -11,13 +11,13 @@ using Xunit.Abstractions;
 
 namespace Commerce.Test.Purchase;
 
-public class DebitNoteTest
+public class DebitMemoTest
 {
     private EventDispatcher dispatcher;
     private DataContext context;
     private ITestOutputHelper output;
 
-    public DebitNoteTest(ITestOutputHelper output)
+    public DebitMemoTest(ITestOutputHelper output)
     {
         this.output = output;
         var options = new DbContextOptionsBuilder<DataContext>()
@@ -27,8 +27,8 @@ public class DebitNoteTest
         context = new DataContext(options);
         dispatcher = new EventDispatcher();
         dispatcher.AddService(context);
-        dispatcher.AddHandler<DebitNoteCommandHandler>();
-        dispatcher.AddHandler<DebitNoteQueryHandler>();
+        dispatcher.AddHandler<DebitMemoCommandHandler>();
+        dispatcher.AddHandler<DebitMemoQueryHandler>();
 
         var enterprise = new Enterprise() { Id = 1, Name = "FashionShop" };
         var supplier1 = new Supplier() { Id = 1, Name = "John Doe" };
@@ -39,41 +39,41 @@ public class DebitNoteTest
         context.Suppliers.Add(supplier2);
         context.SaveChanges();
 
-        var DebitNote1 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
-        DebitNote1.Enterprise = enterprise;
-        DebitNote1.Supplier = supplier1;
-        DebitNote1.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 2 });
-        DebitNote1.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 1 });
+        var DebitMemo1 = new DebitMemo() { Reference = Guid.NewGuid().ToString() };
+        DebitMemo1.Enterprise = enterprise;
+        DebitMemo1.Supplier = supplier1;
+        DebitMemo1.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 2 });
+        DebitMemo1.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 1 });
 
-        var DebitNote2 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
-        DebitNote2.Enterprise = enterprise;
-        DebitNote2.Supplier = supplier2;
-        DebitNote2.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20, Quantity = 5 });
-        DebitNote2.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50, Quantity = 2 });
+        var DebitMemo2 = new DebitMemo() { Reference = Guid.NewGuid().ToString() };
+        DebitMemo2.Enterprise = enterprise;
+        DebitMemo2.Supplier = supplier2;
+        DebitMemo2.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20, Quantity = 5 });
+        DebitMemo2.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50, Quantity = 2 });
 
-        var DebitNote3 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
-        DebitNote3.Enterprise = enterprise;
-        DebitNote3.Supplier = supplier1;
-        DebitNote3.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Hat", Price = 30, Quantity = 1 });
+        var DebitMemo3 = new DebitMemo() { Reference = Guid.NewGuid().ToString() };
+        DebitMemo3.Enterprise = enterprise;
+        DebitMemo3.Supplier = supplier1;
+        DebitMemo3.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Hat", Price = 30, Quantity = 1 });
 
-        var DebitNote4 = new DebitNote() { Reference = Guid.NewGuid().ToString() };
-        DebitNote4.Enterprise = enterprise;
-        DebitNote4.Supplier = supplier2;
-        DebitNote4.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Jacket", Price = 160, Quantity = 1 });
+        var DebitMemo4 = new DebitMemo() { Reference = Guid.NewGuid().ToString() };
+        DebitMemo4.Enterprise = enterprise;
+        DebitMemo4.Supplier = supplier2;
+        DebitMemo4.Lines.Add(new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Jacket", Price = 160, Quantity = 1 });
 
-        context.DebitNotes.Add(DebitNote1);
-        context.DebitNotes.Add(DebitNote2);
-        context.DebitNotes.Add(DebitNote3);
-        context.DebitNotes.Add(DebitNote4);
+        context.DebitMemos.Add(DebitMemo1);
+        context.DebitMemos.Add(DebitMemo2);
+        context.DebitMemos.Add(DebitMemo3);
+        context.DebitMemos.Add(DebitMemo4);
         context.SaveChanges();
     }
 
     [Fact]
     public async void CreateAsync()
     {
-        var DebitNote = new DebitNote() { Reference = Guid.NewGuid().ToString() };
-        DebitNote.EnterpriseId = 1;
-        DebitNote.SupplierId = 1;
+        var DebitMemo = new DebitMemo() { Reference = Guid.NewGuid().ToString() };
+        DebitMemo.EnterpriseId = 1;
+        DebitMemo.SupplierId = 1;
 
         var line1 = new DebitLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 40, Quantity = 3 };
         var gstTax1 = new DebitLineTax() { Name = "GST", Rate = 5, Line = line1 };
@@ -82,51 +82,51 @@ public class DebitNoteTest
         line1.Taxes.Add(gstTax1);
         line1.Taxes.Add(qstTax1);
 
-        DebitNote.Lines.Add(line1);
+        DebitMemo.Lines.Add(line1);
 
-        var command = new DebitNoteCommand();
+        var command = new DebitMemoCommand();
         command.Action = CommandAction.Create;
-        command.Argument = DebitNote;
+        command.Argument = DebitMemo;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(4, result);
 
-        DebitNote = await context.DebitNotes.FindAsync(5);
-        Assert.NotNull(DebitNote);
-        Assert.Equal(137.970m, DebitNote.Total);
+        DebitMemo = await context.DebitMemos.FindAsync(5);
+        Assert.NotNull(DebitMemo);
+        Assert.Equal(137.970m, DebitMemo.Total);
 
-        output.WriteLine($"Subtotal: {DebitNote.Subtotal}");
+        output.WriteLine($"Subtotal: {DebitMemo.Subtotal}");
 
-        foreach (var tax in DebitNote.Taxes)
+        foreach (var tax in DebitMemo.Taxes)
         {
             output.WriteLine($"{tax.Key}: {tax.Value}");
         }
 
-        output.WriteLine($"Total: {DebitNote.Total}");
+        output.WriteLine($"Total: {DebitMemo.Total}");
     }
 
     [Fact]
     public async void UpdateAsync()
     {
-        var DebitNote = await context.DebitNotes.FindAsync(3);
-        DebitNote!.Lines[0].Quantity = 2;
+        var DebitMemo = await context.DebitMemos.FindAsync(3);
+        DebitMemo!.Lines[0].Quantity = 2;
 
-        var command = new DebitNoteCommand();
+        var command = new DebitMemoCommand();
         command.Action = CommandAction.Update;
-        command.Argument = DebitNote;
+        command.Argument = DebitMemo;
 
         var result = await dispatcher.DispatchAsync(command);
         Assert.Equal(2, result);
 
-        DebitNote = await context.DebitNotes.FindAsync(3);
-        Assert.Single(DebitNote!.Lines);
-        Assert.Equal(2, DebitNote!.Lines[0].Quantity);
+        DebitMemo = await context.DebitMemos.FindAsync(3);
+        Assert.Single(DebitMemo!.Lines);
+        Assert.Equal(2, DebitMemo!.Lines[0].Quantity);
     }
 
     [Fact]
     public async void DeleteAsync()
     {
-        var command = new DebitNoteCommand();
+        var command = new DebitMemoCommand();
         command.Action = CommandAction.Delete;
         command.Argument = 1;
 
@@ -137,15 +137,15 @@ public class DebitNoteTest
     [Fact]
     public async void FilterAsync()
     {
-        var query = new DebitNoteQuery();
+        var query = new DebitMemoQuery();
         query.Parameters["Id"] = 1;
-        var list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        var list = await dispatcher.DispatchAsync(query) as List<DebitMemo>;
         Assert.NotNull(list);
         Assert.Single(list);
 
-        query = new DebitNoteQuery();
+        query = new DebitMemoQuery();
         query.Parameters["Date"] = DateTime.Now;
-        list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        list = await dispatcher.DispatchAsync(query) as List<DebitMemo>;
         Assert.NotNull(list);
         Assert.Equal(4, list.Count);
     }
@@ -153,10 +153,10 @@ public class DebitNoteTest
     [Fact]
     public async void SortAsync()
     {
-        var query = new DebitNoteQuery();
+        var query = new DebitMemoQuery();
         query.Sort = "Total";
 
-        var list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        var list = await dispatcher.DispatchAsync(query) as List<DebitMemo>;
         Assert.NotNull(list);
         Assert.Equal(30, list[0].Total);
         Assert.Equal(160, list[1].Total);
@@ -165,7 +165,7 @@ public class DebitNoteTest
 
         // reverse order by name
         query.Sort = "-Total";
-        list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        list = await dispatcher.DispatchAsync(query) as List<DebitMemo>;
         Assert.NotNull(list);
         Assert.Equal(200, list[0].Total);
         Assert.Equal(170, list[1].Total);
@@ -176,11 +176,11 @@ public class DebitNoteTest
     [Fact]
     public async void PaginateAsync()
     {
-        var query = new DebitNoteQuery();
+        var query = new DebitMemoQuery();
         query.Offset = 2;
         query.Limit = 2;
 
-        var list = await dispatcher.DispatchAsync(query) as List<DebitNote>;
+        var list = await dispatcher.DispatchAsync(query) as List<DebitMemo>;
         Assert.NotNull(list);
 
         var invoice1 = list[0];
