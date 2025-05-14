@@ -1,7 +1,7 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Identity.Handlers;
-using Commerce.Core.Identity.Requests;
+using Commerce.Core.Inventory.Commands;
 using Commerce.Core.Inventory.Entities;
+using Commerce.Core.Inventory.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;

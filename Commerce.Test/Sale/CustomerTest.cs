@@ -1,7 +1,7 @@
 ﻿using Commerce.Core.Common;
+using Commerce.Core.Sale.Commands;
 using Commerce.Core.Sale.Entities;
-using Commerce.Core.Sale.Handlers;
-using Commerce.Core.Sale.Requests;
+using Commerce.Core.Sale.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;

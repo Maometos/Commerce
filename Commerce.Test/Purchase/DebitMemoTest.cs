@@ -1,9 +1,8 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Entities;
+using Commerce.Core.Purchase.Commands;
 using Commerce.Core.Purchase.Entities;
-using Commerce.Core.Purchase.Handlers;
-using Commerce.Core.Purchase.Requests;
-using Commerce.Core.Sale.Requests;
+using Commerce.Core.Purchase.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
