@@ -1,7 +1,7 @@
 ﻿using Commerce.Core.Common.Entities;
 using Commerce.Core.Inventory.Entities;
 using Commerce.Core.Purchase.Entities;
-using Commerce.Core.Sale.Entities;
+using Commerce.Core.Sales.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Common;
@@ -17,9 +17,9 @@ public class DataContext : DbContext
     public DbSet<TaxGroup> TaxGroups { get; set; }
     public DbSet<TaxRate> TaxRates { get; set; }
     public DbSet<Customer> Customers { get; set; }
-    public DbSet<SaleInvoice> SaleInvoices { get; set; }
-    public DbSet<SaleInvoiceLine> SaleInvoiceLines { get; set; }
-    public DbSet<SaleInvoiceLineTax> SaleInvoiceLineTaxes { get; set; }
+    public DbSet<SalesInvoice> SaleInvoices { get; set; }
+    public DbSet<SalesInvoiceLine> SaleInvoiceLines { get; set; }
+    public DbSet<SalesInvoiceLineTax> SaleInvoiceLineTaxes { get; set; }
     public DbSet<PaymentReceipt> PaymentReceipts { get; set; }
     public DbSet<CreditMemo> CreditMemos { get; set; }
     public DbSet<CreditLine> CreditLines { get; set; }

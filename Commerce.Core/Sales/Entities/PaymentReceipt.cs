@@ -1,10 +1,10 @@
 ﻿using Commerce.Core.Common.Abstractions;
 
-namespace Commerce.Core.Sale.Entities;
+namespace Commerce.Core.Sales.Entities;
 
 public class PaymentReceipt : Payment
 {
     public int SaleInvoiceId { get; set; }
 
-    public SaleInvoice Invoice { get; set; } = null!;
+    public SalesInvoice Invoice { get; set; } = null!;
 }

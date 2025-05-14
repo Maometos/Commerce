@@ -1,10 +1,9 @@
 ﻿using Commerce.Core.Common.Abstractions;
 
-namespace Commerce.Core.Sale.Entities;
+namespace Commerce.Core.Sales.Entities;
 
-public class RefundAdvice : Payment
+public class CreditLine : TransactionLine<CreditLineTax>
 {
     public int CreditMemoId { get; set; }
-
     public CreditMemo Memo { get; set; } = null!;
 }

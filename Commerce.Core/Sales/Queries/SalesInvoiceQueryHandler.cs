@@ -1,22 +1,22 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Values;
-using Commerce.Core.Sale.Entities;
+using Commerce.Core.Sales.Entities;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Sale.Queries;
+namespace Commerce.Core.Sales.Queries;
 
-public class CreditMemoQueryHandler : QueryHandler<CreditMemoQuery, CreditMemo>
+public class SalesInvoiceQueryHandler : QueryHandler<SalesInvoiceQuery, SalesInvoice>
 {
     private DataContext context;
 
-    public CreditMemoQueryHandler(DataContext context)
+    public SalesInvoiceQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<CreditMemo>> FetchAsync(CreditMemoQuery query, CancellationToken token)
+    protected override async Task<List<SalesInvoice>> FetchAsync(SalesInvoiceQuery query, CancellationToken token)
     {
-        var queryable = context.CreditMemos.AsQueryable();
+        var queryable = context.SaleInvoices.AsQueryable();
 
         if (query.Parameters.ContainsKey("Id"))
         {
@@ -41,7 +41,7 @@ public class CreditMemoQueryHandler : QueryHandler<CreditMemoQuery, CreditMemo>
 
         if (query.Parameters.ContainsKey("Status"))
         {
-            queryable = queryable.Where(e => e.Status == (AdjustmentStatus)query.Parameters["Status"]);
+            queryable = queryable.Where(e => e.PaymentStatus == (PaymentStatus)query.Parameters["Status"]);
         }
 
         return await ListAsync(queryable, query, token);

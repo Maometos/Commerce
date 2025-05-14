@@ -1,8 +1,8 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Entities;
-using Commerce.Core.Sale.Commands;
-using Commerce.Core.Sale.Entities;
-using Commerce.Core.Sale.Queries;
+using Commerce.Core.Sales.Commands;
+using Commerce.Core.Sales.Entities;
+using Commerce.Core.Sales.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +26,8 @@ public class SaleInvoiceTest
         context = new DataContext(options);
         dispatcher = new EventDispatcher();
         dispatcher.AddService(context);
-        dispatcher.AddHandler<SaleInvoiceCommandHandler>();
-        dispatcher.AddHandler<SaleInvoiceQueryHandler>();
+        dispatcher.AddHandler<SalesInvoiceCommandHandler>();
+        dispatcher.AddHandler<SalesInvoiceQueryHandler>();
 
         var enterprise = new Enterprise() { Id = 1, Name = "FashionShop" };
         var customer1 = new Customer() { Id = 1, Name = "John Doe" };
@@ -38,27 +38,27 @@ public class SaleInvoiceTest
         context.Customers.Add(customer2);
         context.SaveChanges();
 
-        var invoice1 = new SaleInvoice() { Reference = Guid.NewGuid().ToString() };
+        var invoice1 = new SalesInvoice() { Reference = Guid.NewGuid().ToString() };
         invoice1.Enterprise = enterprise;
         invoice1.Customer = customer1;
-        invoice1.Lines.Add(new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 2 });
-        invoice1.Lines.Add(new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 1 });
+        invoice1.Lines.Add(new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 2 });
+        invoice1.Lines.Add(new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 1 });
 
-        var invoice2 = new SaleInvoice() { Reference = Guid.NewGuid().ToString() };
+        var invoice2 = new SalesInvoice() { Reference = Guid.NewGuid().ToString() };
         invoice2.Enterprise = enterprise;
         invoice2.Customer = customer2;
-        invoice2.Lines.Add(new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20, Quantity = 5 });
-        invoice2.Lines.Add(new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50, Quantity = 2 });
+        invoice2.Lines.Add(new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "T-Shirt", Price = 20, Quantity = 5 });
+        invoice2.Lines.Add(new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Short", Price = 50, Quantity = 2 });
 
-        var invoice3 = new SaleInvoice() { Reference = Guid.NewGuid().ToString() };
+        var invoice3 = new SalesInvoice() { Reference = Guid.NewGuid().ToString() };
         invoice3.Enterprise = enterprise;
         invoice3.Customer = customer1;
-        invoice3.Lines.Add(new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Hat", Price = 30, Quantity = 1 });
+        invoice3.Lines.Add(new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Hat", Price = 30, Quantity = 1 });
 
-        var invoice4 = new SaleInvoice() { Reference = Guid.NewGuid().ToString() };
+        var invoice4 = new SalesInvoice() { Reference = Guid.NewGuid().ToString() };
         invoice4.Enterprise = enterprise;
         invoice4.Customer = customer2;
-        invoice4.Lines.Add(new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Jacket", Price = 160, Quantity = 1 });
+        invoice4.Lines.Add(new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Jacket", Price = 160, Quantity = 1 });
 
         context.SaleInvoices.Add(invoice1);
         context.SaleInvoices.Add(invoice2);
@@ -70,20 +70,20 @@ public class SaleInvoiceTest
     [Fact]
     public async void CreateAsync()
     {
-        var invoice = new SaleInvoice() { Reference = Guid.NewGuid().ToString() };
+        var invoice = new SalesInvoice() { Reference = Guid.NewGuid().ToString() };
         invoice.EnterpriseId = 1;
         invoice.CustomerId = 1;
 
-        var line1 = new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 3 };
-        var gstTax1 = new SaleInvoiceLineTax() { Name = "GST", Rate = 5, Line = line1 };
-        var pstTax1 = new SaleInvoiceLineTax() { Name = "QST", Rate = 9.975m, Line = line1 };
+        var line1 = new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Shirt", Price = 50, Quantity = 3 };
+        var gstTax1 = new SalesInvoiceLineTax() { Name = "GST", Rate = 5, Line = line1 };
+        var pstTax1 = new SalesInvoiceLineTax() { Name = "QST", Rate = 9.975m, Line = line1 };
 
         line1.Taxes.Add(gstTax1);
         line1.Taxes.Add(pstTax1);
 
-        var line2 = new SaleInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 2 };
-        var gstTax2 = new SaleInvoiceLineTax() { Name = "GST", Rate = 5, Line = line2 };
-        var pstTax2 = new SaleInvoiceLineTax() { Name = "QST", Rate = 9.975m, Line = line2 };
+        var line2 = new SalesInvoiceLine() { Code = Guid.NewGuid().ToString(), Name = "Pant", Price = 70, Quantity = 2 };
+        var gstTax2 = new SalesInvoiceLineTax() { Name = "GST", Rate = 5, Line = line2 };
+        var pstTax2 = new SalesInvoiceLineTax() { Name = "QST", Rate = 9.975m, Line = line2 };
 
         line2.Taxes.Add(gstTax2);
         line2.Taxes.Add(pstTax2);
@@ -91,7 +91,7 @@ public class SaleInvoiceTest
         invoice.Lines.Add(line1);
         invoice.Lines.Add(line2);
 
-        var command = new SaleInvoiceCommand();
+        var command = new SalesInvoiceCommand();
         command.Action = CommandAction.Create;
         command.Argument = invoice;
 
@@ -118,7 +118,7 @@ public class SaleInvoiceTest
         var invoice = await context.SaleInvoices.FindAsync(3);
         invoice!.Lines[0].Quantity = 2;
 
-        var command = new SaleInvoiceCommand();
+        var command = new SalesInvoiceCommand();
         command.Action = CommandAction.Update;
         command.Argument = invoice;
 
@@ -133,7 +133,7 @@ public class SaleInvoiceTest
     [Fact]
     public async void DeleteAsync()
     {
-        var command = new SaleInvoiceCommand();
+        var command = new SalesInvoiceCommand();
         command.Action = CommandAction.Delete;
         command.Argument = 1;
 
@@ -144,15 +144,15 @@ public class SaleInvoiceTest
     [Fact]
     public async void FilterAsync()
     {
-        var query = new SaleInvoiceQuery();
+        var query = new SalesInvoiceQuery();
         query.Parameters["Id"] = 1;
-        var list = await dispatcher.DispatchAsync(query) as List<SaleInvoice>;
+        var list = await dispatcher.DispatchAsync(query) as List<SalesInvoice>;
         Assert.NotNull(list);
         Assert.Single(list);
 
-        query = new SaleInvoiceQuery();
+        query = new SalesInvoiceQuery();
         query.Parameters["Date"] = DateTime.Now;
-        list = await dispatcher.DispatchAsync(query) as List<SaleInvoice>;
+        list = await dispatcher.DispatchAsync(query) as List<SalesInvoice>;
         Assert.NotNull(list);
         Assert.Equal(4, list.Count);
     }
@@ -160,10 +160,10 @@ public class SaleInvoiceTest
     [Fact]
     public async void SortAsync()
     {
-        var query = new SaleInvoiceQuery();
+        var query = new SalesInvoiceQuery();
         query.Sort = "Total";
 
-        var list = await dispatcher.DispatchAsync(query) as List<SaleInvoice>;
+        var list = await dispatcher.DispatchAsync(query) as List<SalesInvoice>;
         Assert.NotNull(list);
         Assert.Equal(30, list[0].Total);
         Assert.Equal(160, list[1].Total);
@@ -172,7 +172,7 @@ public class SaleInvoiceTest
 
         // reverse order by name
         query.Sort = "-Total";
-        list = await dispatcher.DispatchAsync(query) as List<SaleInvoice>;
+        list = await dispatcher.DispatchAsync(query) as List<SalesInvoice>;
         Assert.NotNull(list);
         Assert.Equal(200, list[0].Total);
         Assert.Equal(170, list[1].Total);
@@ -183,11 +183,11 @@ public class SaleInvoiceTest
     [Fact]
     public async void PaginateAsync()
     {
-        var query = new SaleInvoiceQuery();
+        var query = new SalesInvoiceQuery();
         query.Offset = 2;
         query.Limit = 2;
 
-        var list = await dispatcher.DispatchAsync(query) as List<SaleInvoice>;
+        var list = await dispatcher.DispatchAsync(query) as List<SalesInvoice>;
         Assert.NotNull(list);
 
         var invoice1 = list[0];

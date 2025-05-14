@@ -1,8 +1,8 @@
 ﻿using Commerce.Core.Common.Abstractions;
 
-namespace Commerce.Core.Sale.Entities;
+namespace Commerce.Core.Sales.Entities;
 
-public class SaleInvoice : Invoice<SaleInvoiceLine, SaleInvoiceLineTax, PaymentReceipt>
+public class SalesInvoice : Invoice<SalesInvoiceLine, SalesInvoiceLineTax, PaymentReceipt>
 {
     public int CustomerId { get; set; }
     public Customer Customer { get; set; } = null!;

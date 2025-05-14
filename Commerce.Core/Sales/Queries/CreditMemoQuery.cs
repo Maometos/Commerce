@@ -1,6 +1,6 @@
 ﻿using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Sale.Queries;
+namespace Commerce.Core.Sales.Queries;
 
 public class CreditMemoQuery : Query
 {

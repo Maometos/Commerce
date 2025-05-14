@@ -1,22 +1,22 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Sale.Entities;
+using Commerce.Core.Sales.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Sale.Commands;
+namespace Commerce.Core.Sales.Commands;
 
-public class SaleInvoiceCommandHandler : CommandHandler<SaleInvoiceCommand>
+public class SalesInvoiceCommandHandler : CommandHandler<SalesInvoiceCommand>
 {
     private DataContext context;
 
-    public SaleInvoiceCommandHandler(DataContext context)
+    public SalesInvoiceCommandHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<int> CreateAsync(SaleInvoiceCommand command, CancellationToken token)
+    protected override async Task<int> CreateAsync(SalesInvoiceCommand command, CancellationToken token)
     {
-        var invoice = command.Argument as SaleInvoice;
+        var invoice = command.Argument as SalesInvoice;
         if (invoice == null)
         {
             return 0;
@@ -26,9 +26,9 @@ public class SaleInvoiceCommandHandler : CommandHandler<SaleInvoiceCommand>
         return await context.SaveChangesAsync();
     }
 
-    protected override async Task<int> UpdateAsync(SaleInvoiceCommand command, CancellationToken token)
+    protected override async Task<int> UpdateAsync(SalesInvoiceCommand command, CancellationToken token)
     {
-        var invoice = command.Argument as SaleInvoice;
+        var invoice = command.Argument as SalesInvoice;
         if (invoice == null)
         {
             return 0;
@@ -46,7 +46,7 @@ public class SaleInvoiceCommandHandler : CommandHandler<SaleInvoiceCommand>
         return await context.SaveChangesAsync(token);
     }
 
-    protected override async Task<int> DeleteAsync(SaleInvoiceCommand command, CancellationToken token)
+    protected override async Task<int> DeleteAsync(SalesInvoiceCommand command, CancellationToken token)
     {
         var invoice = await context.SaleInvoices.FindAsync(command.Argument, token);
         if (invoice == null)

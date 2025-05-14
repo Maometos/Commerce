@@ -1,6 +1,6 @@
 ﻿using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Sale.Commands;
+namespace Commerce.Core.Sales.Commands;
 
 public class CreditMemoCommand : Command
 {

@@ -1,9 +1,9 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Sale.Entities;
+using Commerce.Core.Sales.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Sale.Commands;
+namespace Commerce.Core.Sales.Commands;
 
 public class CreditMemoCommandHandler : CommandHandler<CreditMemoCommand>
 {
