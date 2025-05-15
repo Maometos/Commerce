@@ -1,12 +1,12 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Purchase.Commands;
-using Commerce.Core.Purchase.Entities;
-using Commerce.Core.Purchase.Queries;
+using Commerce.Core.Contacts.Commands;
+using Commerce.Core.Contacts.Entities;
+using Commerce.Core.Contacts.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Test.Purchase;
+namespace Commerce.Test.Contacts;
 
 public class SupplierTest
 {

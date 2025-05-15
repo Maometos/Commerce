@@ -1,8 +1,8 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Purchase.Entities;
+using Commerce.Core.Contacts.Entities;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Purchase.Queries;
+namespace Commerce.Core.Contacts.Queries;
 
 public class SupplierQueryHandler : QueryHandler<SupplierQuery, Supplier>
 {

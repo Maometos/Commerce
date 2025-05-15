@@ -1,8 +1,8 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Sales.Entities;
+using Commerce.Core.Contacts.Entities;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Sales.Queries;
+namespace Commerce.Core.Contacts.Queries;
 
 public class CustomerQueryHandler : QueryHandler<CustomerQuery, Customer>
 {

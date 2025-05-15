@@ -1,4 +1,5 @@
 ﻿using Commerce.Core.Common.Abstractions;
+using Commerce.Core.Contacts.Entities;
 
 namespace Commerce.Core.Purchase.Entities;
 

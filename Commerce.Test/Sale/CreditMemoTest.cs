@@ -1,5 +1,6 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Entities;
+using Commerce.Core.Contacts.Entities;
 using Commerce.Core.Sales.Commands;
 using Commerce.Core.Sales.Entities;
 using Commerce.Core.Sales.Queries;

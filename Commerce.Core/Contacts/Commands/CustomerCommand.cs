@@ -1,6 +1,6 @@
 ﻿using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Sales.Commands;
+namespace Commerce.Core.Contacts.Commands;
 
 public class CustomerCommand : Command
 {

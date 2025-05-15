@@ -1,6 +1,6 @@
 ﻿using Commerce.Core.Common.Abstractions;
 
-namespace Commerce.Core.Sales.Entities;
+namespace Commerce.Core.Contacts.Entities;
 
 public class Customer : Contact
 {

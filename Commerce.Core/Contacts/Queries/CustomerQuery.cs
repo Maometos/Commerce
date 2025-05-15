@@ -1,6 +1,6 @@
 ﻿using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Sales.Queries;
+namespace Commerce.Core.Contacts.Queries;
 
 public class CustomerQuery : Query
 {

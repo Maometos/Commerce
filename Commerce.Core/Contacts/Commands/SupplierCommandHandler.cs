@@ -1,9 +1,9 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Purchase.Entities;
+using Commerce.Core.Contacts.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Purchase.Commands;
+namespace Commerce.Core.Contacts.Commands;
 
 public class SupplierCommandHandler : CommandHandler<SupplierCommand>
 {

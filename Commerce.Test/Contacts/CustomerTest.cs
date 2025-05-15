@@ -1,12 +1,12 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Sales.Commands;
-using Commerce.Core.Sales.Entities;
-using Commerce.Core.Sales.Queries;
+using Commerce.Core.Contacts.Commands;
+using Commerce.Core.Contacts.Entities;
+using Commerce.Core.Contacts.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Test.Sale;
+namespace Commerce.Test.Contacts;
 
 public class CustomerTest
 {
