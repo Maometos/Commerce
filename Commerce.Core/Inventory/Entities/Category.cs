@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Inventory.Entities;
 
-public class Category : Profile
+public class Category : Definition
 {
     public int ParentId { get; set; }
     public List<Item> Items { get; } = [];

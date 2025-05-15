@@ -2,7 +2,7 @@
 
 namespace Commerce.Core.Inventory.Entities;
 
-public class Brand : Profile
+public class Brand : Definition
 {
     public List<Item> Items { get; } = [];
 }

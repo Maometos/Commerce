@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Commerce.Core.Inventory.Entities;
 
-public class Item : Profile
+public class Item : Definition
 {
     public int BrandId { get; set; }
     public int CategoryId { get; set; }
