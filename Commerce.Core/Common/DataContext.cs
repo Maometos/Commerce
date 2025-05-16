@@ -1,8 +1,8 @@
 ﻿using Commerce.Core.Common.Entities;
 using Commerce.Core.Contacts.Entities;
 using Commerce.Core.Inventory.Entities;
-using Commerce.Core.Purchase.Entities;
-using Commerce.Core.Sales.Entities;
+using Commerce.Core.Invoice.Entities;
+using Commerce.Core.Memo.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Commerce.Core.Common;
