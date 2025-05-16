@@ -1,9 +1,10 @@
 ﻿using Commerce.Core.Common;
+using Commerce.Core.Contacts.Commands;
 using Commerce.Core.Contacts.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Contacts.Commands;
+namespace Commerce.Core.Contacts.Handlers;
 
 public class CustomerCommandHandler : CommandHandler<CustomerCommand>
 {

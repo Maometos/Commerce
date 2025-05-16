@@ -1,6 +1,7 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Commands;
 using Commerce.Core.Common.Entities;
+using Commerce.Core.Common.Handlers;
 using Commerce.Core.Common.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;

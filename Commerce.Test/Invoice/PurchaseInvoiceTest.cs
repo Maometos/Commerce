@@ -3,6 +3,7 @@ using Commerce.Core.Common.Entities;
 using Commerce.Core.Contacts.Entities;
 using Commerce.Core.Invoice.Commands;
 using Commerce.Core.Invoice.Entities;
+using Commerce.Core.Invoice.Handlers;
 using Commerce.Core.Invoice.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;

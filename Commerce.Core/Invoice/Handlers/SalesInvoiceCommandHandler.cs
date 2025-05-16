@@ -1,9 +1,10 @@
 ﻿using Commerce.Core.Common;
+using Commerce.Core.Invoice.Commands;
 using Commerce.Core.Invoice.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Invoice.Commands;
+namespace Commerce.Core.Invoice.Handlers;
 
 public class SalesInvoiceCommandHandler : CommandHandler<SalesInvoiceCommand>
 {

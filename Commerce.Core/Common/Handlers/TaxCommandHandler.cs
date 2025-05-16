@@ -1,8 +1,9 @@
-﻿using Commerce.Core.Common.Entities;
+﻿using Commerce.Core.Common.Commands;
+using Commerce.Core.Common.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Common.Commands;
+namespace Commerce.Core.Common.Handlers;
 
 public class TaxCommandHandler : CommandHandler<TaxGroupCommand>
 {

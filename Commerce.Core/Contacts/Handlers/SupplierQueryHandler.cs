@@ -1,30 +1,28 @@
 ﻿using Commerce.Core.Common;
-using Commerce.Core.Inventory.Entities;
+using Commerce.Core.Contacts.Entities;
+using Commerce.Core.Contacts.Queries;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Inventory.Queries;
+namespace Commerce.Core.Contacts.Handlers;
 
-public class ItemQueryHandler : QueryHandler<ItemQuery, Item>
+public class SupplierQueryHandler : QueryHandler<SupplierQuery, Supplier>
 {
     private DataContext context;
 
-    public ItemQueryHandler(DataContext context)
+    public SupplierQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<Item>> FetchAsync(ItemQuery query, CancellationToken token)
+    protected override async Task<List<Supplier>> FetchAsync(SupplierQuery query, CancellationToken token)
     {
-        var queryable = context.Items.AsQueryable();
+        var queryable = context.Suppliers.AsQueryable();
 
         foreach (var parameter in query.Parameters)
         {
             switch (parameter.Value)
             {
                 case int value:
-                    queryable = queryable.Filter(parameter.Key, value);
-                    break;
-                case decimal value:
                     queryable = queryable.Filter(parameter.Key, value);
                     break;
                 case string value:

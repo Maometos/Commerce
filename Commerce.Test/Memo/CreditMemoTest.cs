@@ -3,6 +3,7 @@ using Commerce.Core.Common.Entities;
 using Commerce.Core.Contacts.Entities;
 using Commerce.Core.Memo.Commands;
 using Commerce.Core.Memo.Entities;
+using Commerce.Core.Memo.Handlers;
 using Commerce.Core.Memo.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;

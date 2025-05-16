@@ -1,22 +1,23 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Values;
 using Commerce.Core.Memo.Entities;
+using Commerce.Core.Memo.Queries;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Memo.Queries;
+namespace Commerce.Core.Memo.Handlers;
 
-public class CreditMemoQueryHandler : QueryHandler<CreditMemoQuery, CreditMemo>
+public class DebitMemoQueryHandler : QueryHandler<DebitMemoQuery, DebitMemo>
 {
     private DataContext context;
 
-    public CreditMemoQueryHandler(DataContext context)
+    public DebitMemoQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<CreditMemo>> FetchAsync(CreditMemoQuery query, CancellationToken token)
+    protected override async Task<List<DebitMemo>> FetchAsync(DebitMemoQuery query, CancellationToken token)
     {
-        var queryable = context.CreditMemos.AsQueryable();
+        var queryable = context.DebitMemos.AsQueryable();
 
         if (query.Parameters.ContainsKey("Id"))
         {

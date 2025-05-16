@@ -1,20 +1,22 @@
-﻿using Commerce.Core.Common.Entities;
+﻿using Commerce.Core.Common;
+using Commerce.Core.Inventory.Entities;
+using Commerce.Core.Inventory.Queries;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Common.Queries;
+namespace Commerce.Core.Inventory.Handlers;
 
-public class TaxQueryHandler : QueryHandler<TaxGroupQuery, TaxGroup>
+public class CategoryQueryHandler : QueryHandler<CategoryQuery, Category>
 {
     private DataContext context;
 
-    public TaxQueryHandler(DataContext context)
+    public CategoryQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<TaxGroup>> FetchAsync(TaxGroupQuery query, CancellationToken token)
+    protected override async Task<List<Category>> FetchAsync(CategoryQuery query, CancellationToken token)
     {
-        var queryable = context.TaxGroups.AsQueryable();
+        var queryable = context.Categories.AsQueryable();
         if (query.Parameters.ContainsKey("Id"))
         {
             queryable = queryable.Filter("Id", query.Parameters["Id"]);

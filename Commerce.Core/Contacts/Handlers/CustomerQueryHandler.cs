@@ -1,20 +1,22 @@
-﻿using Commerce.Core.Common.Entities;
+﻿using Commerce.Core.Common;
+using Commerce.Core.Contacts.Entities;
+using Commerce.Core.Contacts.Queries;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Common.Queries;
+namespace Commerce.Core.Contacts.Handlers;
 
-public class EnterpriseQueryHandler : QueryHandler<EnterpriseQuery, Enterprise>
+public class CustomerQueryHandler : QueryHandler<CustomerQuery, Customer>
 {
     private DataContext context;
 
-    public EnterpriseQueryHandler(DataContext context)
+    public CustomerQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<Enterprise>> FetchAsync(EnterpriseQuery query, CancellationToken token)
+    protected override async Task<List<Customer>> FetchAsync(CustomerQuery query, CancellationToken token)
     {
-        var queryable = context.Enterprises.AsQueryable();
+        var queryable = context.Customers.AsQueryable();
 
         foreach (var parameter in query.Parameters)
         {

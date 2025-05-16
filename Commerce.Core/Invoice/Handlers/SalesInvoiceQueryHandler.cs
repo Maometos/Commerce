@@ -1,22 +1,23 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Values;
-using Commerce.Core.Memo.Entities;
+using Commerce.Core.Invoice.Entities;
+using Commerce.Core.Invoice.Queries;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Memo.Queries;
+namespace Commerce.Core.Invoice.Handlers;
 
-public class DebitMemoQueryHandler : QueryHandler<DebitMemoQuery, DebitMemo>
+public class SalesInvoiceQueryHandler : QueryHandler<SalesInvoiceQuery, SalesInvoice>
 {
     private DataContext context;
 
-    public DebitMemoQueryHandler(DataContext context)
+    public SalesInvoiceQueryHandler(DataContext context)
     {
         this.context = context;
     }
 
-    protected override async Task<List<DebitMemo>> FetchAsync(DebitMemoQuery query, CancellationToken token)
+    protected override async Task<List<SalesInvoice>> FetchAsync(SalesInvoiceQuery query, CancellationToken token)
     {
-        var queryable = context.DebitMemos.AsQueryable();
+        var queryable = context.SaleInvoices.AsQueryable();
 
         if (query.Parameters.ContainsKey("Id"))
         {
@@ -41,7 +42,7 @@ public class DebitMemoQueryHandler : QueryHandler<DebitMemoQuery, DebitMemo>
 
         if (query.Parameters.ContainsKey("Status"))
         {
-            queryable = queryable.Where(e => e.Status == (AdjustmentStatus)query.Parameters["Status"]);
+            queryable = queryable.Where(e => e.PaymentStatus == (PaymentStatus)query.Parameters["Status"]);
         }
 
         return await ListAsync(queryable, query, token);

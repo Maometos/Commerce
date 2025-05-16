@@ -1,9 +1,10 @@
 ﻿using Commerce.Core.Common;
+using Commerce.Core.Inventory.Commands;
 using Commerce.Core.Inventory.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Inventory.Commands;
+namespace Commerce.Core.Inventory.Handlers;
 
 public class BrandCommandHandler : CommandHandler<BrandCommand>
 {

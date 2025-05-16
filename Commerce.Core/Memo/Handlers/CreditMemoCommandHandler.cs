@@ -1,9 +1,10 @@
 ﻿using Commerce.Core.Common;
+using Commerce.Core.Memo.Commands;
 using Commerce.Core.Memo.Entities;
 using Commerce.Infrastructure.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace Commerce.Core.Memo.Commands;
+namespace Commerce.Core.Memo.Handlers;
 
 public class CreditMemoCommandHandler : CommandHandler<CreditMemoCommand>
 {

@@ -1,9 +1,10 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Common.Values;
 using Commerce.Core.Invoice.Entities;
+using Commerce.Core.Invoice.Queries;
 using Commerce.Infrastructure.CQRS;
 
-namespace Commerce.Core.Invoice.Queries;
+namespace Commerce.Core.Invoice.Handlers;
 
 public class PurchaseInvoiceQueryHandler : QueryHandler<PurchaseInvoiceQuery, PurchaseInvoice>
 {

@@ -1,6 +1,7 @@
 ﻿using Commerce.Core.Common;
 using Commerce.Core.Contacts.Commands;
 using Commerce.Core.Contacts.Entities;
+using Commerce.Core.Contacts.Handlers;
 using Commerce.Core.Contacts.Queries;
 using Commerce.Infrastructure.CQRS;
 using Commerce.Infrastructure.Dispatcher;
